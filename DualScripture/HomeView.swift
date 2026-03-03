@@ -9,6 +9,28 @@ import SwiftUI
 import Foundation
 import SwiftSoup
 
+//var tagalogBOM: JS =
+//{
+//    "1 Nephi": {
+//        "heading": "",
+//        "1": {
+//            "1": "",
+//            "2": ""
+//        },
+//        "2": {
+//            "1": "",
+//            "2": ""
+//        }
+//    },
+//    "2 Nephi": {
+//        "heading": "",
+//        "1": {
+//            
+//        }
+//    }
+//}
+
+
 var scripture1 = ScriptureVerse(targetLangVerse: "At siya ay naglakbay sa may mga hangganang malapit sa dalampasigan ng Dagat na Pula; at siya ay naglakbay sa ilang sa mga hangganang mas malapit sa Dagat na Pula; at siya ay naglakbay sa ilang kasama ang kanyang mag-anak, na binubuo ng aking inang si Saria, at ng mga nakatatanda kong kapatid na sina Laman, Lemuel, at Sam.", showTargetLang: true, knownLangVerse: "And he came down by the borders near the shore of the Red Sea; and he traveled in the wilderness in the borders which are nearer the Red Sea; and he did travel in the wilderness with his family, which consisted of my mother, Sariah, and my elder brothers, who were Laman, Lemuel, and Sam.", verseNumber: "1")
 
 var scripture2 = ScriptureVerse(targetLangVerse: "At ngayon, ito ay nangyari na pagkaraang ako, si Nephi, ay matapos sa pagtuturo sa aking mga kapatid, ang aming amang si Lehi ay nangusap din ng maraming bagay sa kanila, at inulit sa kanila kung gaano kadakila ang mga bagay na ginawa ng Panginoon para sa kanila sa paglalabas sa kanila sa lupain ng Jerusalem.", showTargetLang: true, knownLangVerse: "And he came down by the borders near the shore of the Red Sea; and he traveled in the wilderness in the borders which are nearer the Red Sea; and he did travel in the wilderness with his family, which consisted of my mother, Sariah, and my elder brothers, who were Laman, Lemuel, and Sam.", verseNumber: "2")
@@ -30,9 +52,55 @@ struct HomeView: View {
     
     @State var currentChapter: [ScriptureVerse] = []
     
-//    init() {
-//        currentChapter = verses
-//    }
+    func loadJSONFile() -> Data? {
+//        let fileUrl = URL(filePath: "/Users/michaelknight/Documents/XcodeProjects/Bookshelf/Bookshelf/Data/BooksListCSV.csv")
+//        do {
+//            let fileContent = try String(contentsOf: fileUrl, encoding: .json)
+//        } catch {
+//            
+//        }
+        guard let url = Bundle.main.url(forResource: "book-of-mormon", withExtension: "json") else {
+               fatalError("Failed to locate book-of-mormon.json in bundle")
+           }
+           do {
+               return try Data(contentsOf: url)
+              
+           } catch {
+               fatalError("Failed to load file from bundle: \(error)")
+           }
+    }
+    
+    init() {
+            loadJSONFile()
+        if let jsonData = loadJSONFile() {
+            let decoder = JSONDecoder()
+            
+            do {
+                let engBOM = try decoder.decode(EnglishBOM.self, from: jsonData)
+                
+                let mosiah = engBOM.books.first(where: {$0.book == "Mosiah"})
+                // Accessing nested data
+                
+                for chapter in mosiah?.chapters ?? [] {
+                    for verse in chapter.verses {
+                        print("\(verse.verse) - \(verse.text)")
+                    }
+                }
+//                for book in engBOM.books {
+//                    
+//                    print("Book: \(book.book)")
+//                    print("Book title: \(book.full_title)")
+////                    for employee in department.employees {
+////                        print("  - Employee Name: \(employee.name), Experience: \(employee.experience_years) years")
+////                    }
+//                  }
+                
+            } catch {
+                print("Error decoding JSON: \(error)")
+            }
+        }
+       
+    }
     
 //    init() {
 //        Task {
