@@ -39,27 +39,28 @@ var scripture3 = ScriptureVerse(targetLangVerse: "Samakatwid, ako, si Lehi, ay n
 
 var scripture4 = ScriptureVerse(targetLangVerse: "At dinggin, ito ay karunungan na ikubli muna ang lupain sa kaalaman ng mga ibang bansa; sapagkat dinggin, maraming bansa ang sasakop sa lupain, kung kaya’t hindi magkakaroon ng pook na ipamamana.", showTargetLang: true, knownLangVerse: "And he came down by the borders near the shore of the Red Sea; and he traveled in the wilderness in the borders which are nearer the Red Sea; and he did travel in the wilderness with his family, which consisted of my mother, Sariah, and my elder brothers, who were Laman, Lemuel, and Sam.", verseNumber: "4")
 
-struct Verse {
+struct Verse: Codable {
     var number: String;
     var text: String
 }
 
 struct HomeView: View {
     @State var showingTargetLanguage: Bool = true
+    @State var verseData: [DualLanguageVerse] = []
     @State var verses: [ScriptureVerse] = [scripture1, scripture2, scripture3,scripture3,scripture3,scripture3,scripture3,scripture3,scripture3,scripture3,scripture3,scripture3,scripture3,scripture3,scripture3,scripture3]
     @State var verses2: [ScriptureVerse] = [scripture3, scripture3, scripture3, scripture3]
     @State var verses3: [ScriptureVerse] =  [scripture1, scripture2, scripture3,scripture3,scripture3,scripture3,scripture3,scripture3,scripture3,scripture3,scripture3,scripture3,scripture3,scripture3,scripture3,scripture3]
     
     @State var currentChapter: [ScriptureVerse] = []
     
-    func loadJSONFile() -> Data? {
+    func loadJSONFile(fileName: String) -> Data? {
 //        let fileUrl = URL(filePath: "/Users/michaelknight/Documents/XcodeProjects/Bookshelf/Bookshelf/Data/BooksListCSV.csv")
 //        do {
 //            let fileContent = try String(contentsOf: fileUrl, encoding: .json)
 //        } catch {
 //            
 //        }
-        guard let url = Bundle.main.url(forResource: "book-of-mormon", withExtension: "json") else {
+        guard let url = Bundle.main.url(forResource: fileName, withExtension: "json") else {
                fatalError("Failed to locate book-of-mormon.json in bundle")
            }
            do {
@@ -70,37 +71,56 @@ struct HomeView: View {
            }
     }
     
-    init() {
-            loadJSONFile()
-        if let jsonData = loadJSONFile() {
+    func getBOMData() {
+        var engBOM: EnglishBOM
+        var tglBOM: EnglishBOM
+        
+        var evd: [VerseEng] = []
+        var tvd: [VerseEng] = []
+        
+        // english
+        if let jsonData = loadJSONFile(fileName: "book-of-mormon") {
             let decoder = JSONDecoder()
             
             do {
-                let engBOM = try decoder.decode(EnglishBOM.self, from: jsonData)
+                engBOM = try decoder.decode(EnglishBOM.self, from: jsonData)
+                evd = engBOM.books[0].chapters[0].verses
                 
-                let mosiah = engBOM.books.first(where: {$0.book == "Mosiah"})
-                // Accessing nested data
-                
-                for chapter in mosiah?.chapters ?? [] {
-                    for verse in chapter.verses {
-                        print("\(verse.verse) - \(verse.text)")
-                    }
-                }
-//                for book in engBOM.books {
-//                    
-//                    print("Book: \(book.book)")
-//                    print("Book title: \(book.full_title)")
-////                    for employee in department.employees {
-////                        print("  - Employee Name: \(employee.name), Experience: \(employee.experience_years) years")
-////                    }
-//                  }
                 
             } catch {
                 print("Error decoding JSON: \(error)")
             }
         }
-       
+        
+        // tagalog
+        if let jsonData = loadJSONFile(fileName: "tagalog-bom") {
+            let decoder = JSONDecoder()
+            
+            do {
+                tglBOM = try decoder.decode(EnglishBOM.self, from: jsonData)
+                tvd = tglBOM.books[0].chapters[0].verses
+                
+                
+            } catch {
+                print("Error decoding JSON: \(error)")
+            }
+        }
+        
+        var count = evd.count
+        
+        for i in 0..<count {
+            verseData.append(
+                DualLanguageVerse(knownLangVerse: evd[i].text, targetLangVerse: tvd[i].text, showTargetLang: true, verse: evd[i].verse)
+            )
+        }
+        
     }
+    
+    func saveAsJson() -> Void {
+//        let data = NSJSONSerialization.dataWithJSONObject(array, options: nil, error: nil)
+//        let string = NSString(data: data!, encoding: NSUTF8StringEncoding)
+    }
+    
     
 //    init() {
 //        Task {
@@ -130,18 +150,19 @@ struct HomeView: View {
 
     var body: some View {
         ZStack {
+           
             VStack {
-                //   ScrollView {
-                List(0..<1) { index in
-                    VStack {
-                        ForEach($verses, id: \.self) { $verse in
+                ScrollView {
+                    ForEach($verseData, id: \.self.verse) { $verse in
+                        VStack {
                             HStack {
                                 VStack {
-                                    Text(verse.verseNumber)
+                                    Text("\(verse.verse)")
+                                        .font(.custom("Poppins-Regular", size: 12))
                                         .frame(alignment: .bottomLeading)
                                         .foregroundStyle(.blue)
                                     Spacer()
-                                }
+                                }.frame(width: 20)
                                 Text(verse.showTargetLang ? verse.targetLangVerse : verse.knownLangVerse)
                                     .font(.custom("Poppins-Regular", size: 15))
                                     .foregroundStyle(.gray)
@@ -150,37 +171,40 @@ struct HomeView: View {
                                             verse.showTargetLang.toggle()
                                         }
                                     }
+                                Spacer()
                                 
                             }
-                            .frame(width: 400)
+                            .frame(width: 380)
                             .padding(2)
+                            
                         }
-                    }
-                    .background(Color.clear)
-                    .swipeActions( edge: .trailing) {
-                        Button {
-                            verses = verses2
-                        } label: {
-                            Image(systemName: "chevron.right")
-                        }
-                    }
-                    .swipeActions(edge: .leading) {
-                        Button {
-                            verses = verses3
-                        } label: {
-                            Image(systemName: "chevron.left")
-                        }
+                        .background(Color.clear)
+                        //                    .swipeActions( edge: .trailing) {
+                        //                        Button {
+                        //                            verses = verses2
+                        //                        } label: {
+                        //                            Image(systemName: "chevron.right")
+                        //                        }
+                        //                    }
+                        //                    .swipeActions(edge: .leading) {
+                        //                        Button {
+                        //                            verses = verses3
+                        //                        } label: {
+                        //                            Image(systemName: "chevron.left")
+                        //                        }
+                        //}
+                    }.frame(width: 450)
+                        .scrollContentBackground(.hidden) // Hides the default list background
+                        .background(Color.clear)
                 }
-            }.frame(width: 450)
-                    .scrollContentBackground(.hidden) // Hides the default list background
-                    .background(Color.clear)
-               
-               // }
             }.frame(width: 450, height: 690)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity) // Make the frame
         .background(.mainBackground)
         .ignoresSafeArea()
+        .onAppear() {
+            getBOMData()
+        }
     }
 }
 
