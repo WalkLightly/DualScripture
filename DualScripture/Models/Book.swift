@@ -10,5 +10,6 @@ import Foundation
 struct Book  {
     let name: String
     let chapterCount: Int
+    let abbreviation: String
 }
 
