@@ -231,14 +231,16 @@ struct HomeView: View {
                                 secondaryLang = "Spanish"
                                 showSecondaryLangOptions = false
                             }
-                        Text("Tagalog")                                        .font(.custom("Poppins-Regular", size: 20))
+                        Text("Tagalog")
+                            .font(.custom("Poppins-Regular", size: 20))
                             .frame(height: 30)
                             .foregroundStyle(.black)
                             .onTapGesture {
                                 secondaryLang = "Tagalog"
                                 showSecondaryLangOptions = false
                             }
-                        Text("Cebuano")                                        .font(.custom("Poppins-Regular", size: 20))
+                        Text("Cebuano")
+                            .font(.custom("Poppins-Regular", size: 20))
                             .frame(height: 30)
                             .foregroundStyle(.black)
                             .onTapGesture {

@@ -9,12 +9,36 @@ import SwiftUI
 
 struct BOMChaptersListView: View {
     @State var chaptersCount: Int
+    @State var bomBook: String = "1 Nephi"
     var body: some View {
         VStack {
+            ZStack {
+                VStack {
+                    
+                }
+                .frame(width: 230, height: 45)
+                .background(.blue)
+                .cornerRadius(12)
+                .offset(x: 0, y: 2)
+                Text(bomBook)
+                    .foregroundStyle(Color.black)
+                    .font(.custom("Poppins-Regular", size: 30))
+                    .frame(width: 230, height: 45)
+                    .background(
+                        LinearGradient(gradient: Gradient(colors: [.versesBackground, .chapterBorder, .chapterBorder, .chapterBorder, .chapterBorder]),startPoint: .leading, endPoint: .trailing)
+                    )
+                    .cornerRadius(10)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(.blue, lineWidth: 0.2)
+                    )
+            }
+            .padding(.bottom, 20)
+            
             HStack {
                 ForEach (1..<chaptersCount) { chapter in
                     if chapter < 7 {
-                        NavigationLink(destination: VersesView()) {
+                        NavigationLink(destination: VersesView(currentBook: bomBook, currentChapter: String(chapter))) {
                             Text("\(chapter)")
                                 .font(.custom("Poppins-Regular", size: 17))
                                 .foregroundStyle(.white)
@@ -32,7 +56,7 @@ struct BOMChaptersListView: View {
                 HStack {
                     ForEach (7..<13) { chapter in
                         if chapter <= chaptersCount {
-                            NavigationLink(destination: VersesView()) {
+                            NavigationLink(destination: VersesView(currentBook: bomBook, currentChapter: String(chapter))) {
                                 Text("\(chapter)")
                                     .font(.custom("Poppins-Regular", size: 17))
                                     .foregroundStyle(.white)
@@ -51,7 +75,7 @@ struct BOMChaptersListView: View {
                 HStack {
                     ForEach (13..<19) { chapter in
                         if chapter <= chaptersCount {
-                            NavigationLink(destination: VersesView()) {
+                            NavigationLink(destination: VersesView(currentBook: bomBook, currentChapter: String(chapter))) {
                                 Text("\(chapter)")
                                     .font(.custom("Poppins-Regular", size: 17))
                                     .foregroundStyle(.white)
@@ -70,7 +94,7 @@ struct BOMChaptersListView: View {
                 HStack {
                     ForEach (19..<25) { chapter in
                         if chapter <= chaptersCount {
-                            NavigationLink(destination: VersesView()) {
+                            NavigationLink(destination: VersesView(currentBook: bomBook, currentChapter: String(chapter))) {
                                 Text("\(chapter)")
                                     .font(.custom("Poppins-Regular", size: 17))
                                     .foregroundStyle(.white)
@@ -89,7 +113,7 @@ struct BOMChaptersListView: View {
                 HStack {
                     ForEach (25..<31) { chapter in
                         if chapter <= chaptersCount {
-                            NavigationLink(destination: VersesView()) {
+                            NavigationLink(destination: VersesView(currentBook: bomBook, currentChapter: String(chapter))) {
                                 Text("\(chapter)")
                                     .font(.custom("Poppins-Regular", size: 17))
                                     .foregroundStyle(.white)
@@ -108,7 +132,7 @@ struct BOMChaptersListView: View {
                 HStack {
                     ForEach (31..<37) { chapter in
                         if chapter <= chaptersCount {
-                            NavigationLink(destination: VersesView()) {
+                            NavigationLink(destination: VersesView(currentBook: bomBook, currentChapter: String(chapter))) {
                                 Text("\(chapter)")
                                     .font(.custom("Poppins-Regular", size: 17))
                                     .foregroundStyle(.white)
@@ -127,7 +151,7 @@ struct BOMChaptersListView: View {
                 HStack {
                     ForEach (37..<43) { chapter in
                         if chapter <= chaptersCount {
-                            NavigationLink(destination: VersesView()) {
+                            NavigationLink(destination: VersesView(currentBook: bomBook, currentChapter: String(chapter))) {
                                 Text("\(chapter)")
                                     .font(.custom("Poppins-Regular", size: 17))
                                     .foregroundStyle(.white)
@@ -146,7 +170,7 @@ struct BOMChaptersListView: View {
                 HStack {
                     ForEach (43..<49) { chapter in
                         if chapter <= chaptersCount {
-                            NavigationLink(destination: VersesView()) {
+                            NavigationLink(destination: VersesView(currentBook: bomBook, currentChapter: String(chapter))) {
                                 Text("\(chapter)")
                                     .font(.custom("Poppins-Regular", size: 17))
                                     .foregroundStyle(.white)
@@ -165,7 +189,7 @@ struct BOMChaptersListView: View {
                 HStack {
                     ForEach (49..<55) { chapter in
                         if chapter <= chaptersCount {
-                            NavigationLink(destination: VersesView()) {
+                            NavigationLink(destination: VersesView(currentBook: bomBook, currentChapter: String(chapter))) {
                                 Text("\(chapter)")
                                     .font(.custom("Poppins-Regular", size: 17))
                                     .foregroundStyle(.white)
@@ -184,7 +208,7 @@ struct BOMChaptersListView: View {
                 HStack {
                     ForEach (55..<61) { chapter in
                         if chapter <= chaptersCount {
-                            NavigationLink(destination: VersesView()) {
+                            NavigationLink(destination: VersesView(currentBook: bomBook, currentChapter: String(chapter))) {
                                 Text("\(chapter)")
                                     .font(.custom("Poppins-Regular", size: 17))
                                     .foregroundStyle(.white)
@@ -203,7 +227,7 @@ struct BOMChaptersListView: View {
                 HStack {
                     ForEach (61..<67) { chapter in
                         if chapter <= chaptersCount {
-                            NavigationLink(destination: VersesView()) {
+                            NavigationLink(destination: VersesView(currentBook: bomBook, currentChapter: String(chapter))) {
                                 Text("\(chapter)")
                                     .font(.custom("Poppins-Regular", size: 17))
                                     .foregroundStyle(.white)
@@ -218,9 +242,10 @@ struct BOMChaptersListView: View {
                     }
                 }
             }
+            Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding(.top, 100)
+        .padding(.top, 30)
     }
 }
 
