@@ -23,7 +23,7 @@ struct BOMBooksListView: View {
                                 VStack() {
                                     Spacer()
                                     Text(book.name)
-                                        .font(.custom("Poppins-Regular", size: 20))
+                                        .font(.custom("Inder-Regular", size: 20))
                                         .foregroundStyle(.white)
                                         .padding(.top, -16)
                                 }
@@ -46,7 +46,7 @@ struct BOMBooksListView: View {
                                 VStack() {
                                     Spacer()
                                     Text(book.name)
-                                        .font(.custom("Poppins-Regular", size: 20))
+                                        .font(.custom("Inder-Regular", size: 20))
                                         .foregroundStyle(.white)
                                         .padding(.top, -16)
                                 }

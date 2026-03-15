@@ -30,7 +30,7 @@ struct BOMChaptersListView: View {
                     .cornerRadius(10)
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
-                            .stroke(.blue, lineWidth: 0.2)
+                            .stroke(.blue, lineWidth: 0.4)
                     )
             }
             .padding(.bottom, 20)

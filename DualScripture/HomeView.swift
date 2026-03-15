@@ -146,11 +146,11 @@ struct HomeView: View {
                                         .foregroundStyle(.black)
                                 }
                                 .frame(width: 100, height: 40)
-                                .background(.blue.opacity(0.2))
+                                .background(.mint.opacity(0.2))
                                 .cornerRadius(5)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 5)
-                                        .stroke(.blue, lineWidth: 1) // 2. Apply border to same shape
+                                        .stroke(.mint, lineWidth: 1) // 2. Apply border to same shape
                                 )
                             }
                             
@@ -166,11 +166,11 @@ struct HomeView: View {
                                         .foregroundStyle(.black)
                                 }
                                 .frame(width: 100, height: 40)
-                                .background(.blue.opacity(0.2))
+                                .background(.mint.opacity(0.2))
                                 .cornerRadius(5)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 5)
-                                        .stroke(.blue, lineWidth: 1) // 2. Apply border to same shape
+                                        .stroke(.mint, lineWidth: 1) // 2. Apply border to same shape
                                 )
                             }
                         }
@@ -182,28 +182,32 @@ struct HomeView: View {
                 }
                 if showPrimaryLangOptions {
                     VStack {
-                        Text("English")                                        .font(.custom("Poppins-Regular", size: 20))
+                        Text("English")
+                            .font(.custom("Poppins-Regular", size: 20))
                             .frame(height: 30)
                             .foregroundStyle(.black)
                             .onTapGesture {
                                 primaryLang = "English"
                                 showPrimaryLangOptions = false
                             }
-                        Text("Spanish")                                        .font(.custom("Poppins-Regular", size: 20))
+                        Text("Spanish")
+                            .font(.custom("Poppins-Regular", size: 20))
                             .frame(height: 30)
                             .foregroundStyle(.black)
                             .onTapGesture {
                                 primaryLang = "Spanish"
                                 showPrimaryLangOptions = false
                             }
-                        Text("Tagalog")                                        .font(.custom("Poppins-Regular", size: 20))
+                        Text("Tagalog")
+                            .font(.custom("Poppins-Regular", size: 20))
                             .frame(height: 30)
                             .foregroundStyle(.black)
                             .onTapGesture {
                                 primaryLang = "Tagalog"
                                 showPrimaryLangOptions = false
                             }
-                        Text("Cebuano")                                        .font(.custom("Poppins-Regular", size: 20))
+                        Text("Cebuano")
+                            .font(.custom("Poppins-Regular", size: 20))
                             .frame(height: 30)
                             .foregroundStyle(.black)
                             .onTapGesture {
@@ -213,18 +217,20 @@ struct HomeView: View {
                     }
                     .frame(width: 100, height: 170)
                     .background(.white)
-                    .offset(x: -93, y: -53)
+                    .offset(x: -93, y: 12)
                 }
                 if showSecondaryLangOptions {
                     VStack {
-                        Text("English")                                        .font(.custom("Poppins-Regular", size: 20))
+                        Text("English")
+                            .font(.custom("Poppins-Regular", size: 20))
                             .frame(height: 30)
                             .foregroundStyle(.black)
                             .onTapGesture {
                                 secondaryLang = "English"
                                 showSecondaryLangOptions = false
                             }
-                        Text("Spanish")                                        .font(.custom("Poppins-Regular", size: 20))
+                        Text("Spanish")
+                            .font(.custom("Poppins-Regular", size: 20))
                             .frame(height: 30)
                             .foregroundStyle(.black)
                             .onTapGesture {
@@ -250,7 +256,7 @@ struct HomeView: View {
                     }
                     .frame(width: 100, height: 170)
                     .background(.white)
-                    .offset(x: 87, y: -53)
+                    .offset(x: 87, y: 12)
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
