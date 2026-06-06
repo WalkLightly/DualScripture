@@ -47,7 +47,7 @@ struct VersesView: View {
         var evd: [VerseEng] = []
         var tvd: [VerseEng] = []
         // secondary language
-        if let jsonData = loadJSONFile(fileName: "spanish-bom") {
+        if let jsonData = loadJSONFile(fileName: "book-of-mormon") {
             let decoder = JSONDecoder()
             
             do {
