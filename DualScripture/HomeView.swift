@@ -8,6 +8,7 @@
 import SwiftUI
 import Foundation
 import SwiftSoup
+internal import Combine
 
 
 
@@ -15,6 +16,7 @@ struct HomeView: View {
     var languages: [String] = ["Tagalog", "English", "Spanish", "Cebuano"]
     @State var primaryLang: String = "Tagalog"
     @State var secondaryLang: String = "English"
+
     
     @State var showPrimaryLangOptions: Bool = false
     @State var showSecondaryLangOptions: Bool = false

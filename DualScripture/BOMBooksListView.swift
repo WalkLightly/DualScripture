@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct BOMBooksListView: View {
-    var primaryLang: String
-    var secondaryLang: String
+    @State var primaryLang: String
+    @State var secondaryLang: String
     @State var chosenBook: String = "1 Nephi"
     
     var body: some View {
@@ -18,7 +18,7 @@ struct BOMBooksListView: View {
                 ForEach (BOM_BOOKS, id: \.self.name) { book in
                     
                     if book.chapterCount > 1 {
-                        NavigationLink(destination: BOMChaptersListView(chaptersCount: book.chapterCount, bomBook: book.name)) {
+                        NavigationLink(destination: BOMChaptersListView(primaryLang: primaryLang, secondaryLang: secondaryLang, chaptersCount: book.chapterCount, bomBook: book.name)) {
                             HStack {
                                 VStack() {
                                     Spacer()
@@ -41,7 +41,7 @@ struct BOMBooksListView: View {
                         .listRowBackground(Color.black)
                         .navigationLinkIndicatorVisibility(.hidden)
                     } else {
-                        NavigationLink(destination: VersesView()) {
+                        NavigationLink(destination: VersesView(primaryLang: primaryLang, secondaryLang: secondaryLang, currentBook: book.name, currentChapter: "1")) {
                             HStack {
                                 VStack() {
                                     Spacer()

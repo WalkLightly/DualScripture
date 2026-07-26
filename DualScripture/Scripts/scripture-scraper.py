@@ -159,6 +159,7 @@ def scrape_data():
 
 def flatten_data():
     '''
+    did this update there too?
          flatten the data to prepare it for moving left and right in the scriptures view
         should end up looking like this
         [

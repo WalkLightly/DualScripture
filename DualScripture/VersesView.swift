@@ -1,3 +1,4 @@
+import Foundation
 //
 //  VersesView.swift
 //  DualScripture
@@ -5,116 +6,226 @@
 //  Created by Michael Knight on 3/6/26.
 //
 import SwiftUI
-import Foundation
 
 struct VersesView: View {
     var languages: [String] = ["Tagalog", "English", "Spanish", "Cebuano"]
-    
+    @State var primaryLang: String
+    @State var secondaryLang: String
+    @State var currentBook: String
+
     @State var verseData: [DualLanguageVerse] = []
-    @State var currentBook: String = "Jarom"
-    @State var currentChapter: String = "1"
-    
+    @State var currentChapter: String
+
     @State var showBooksList: Bool = false
     @State var totalChapters: Int = 5
     @State var showLanguages: Bool = false
     @State var showSecondaryLangOptions: Bool = false
     @State var showPrimaryLangOptions: Bool = false
-    @State var primaryLang: String = "Tagalog"
-    @State var secondaryLang: String = "English"
+    @State private var tempPLang: String = ""
+    @State private var tempSLang: String = ""
 
-       
-    func loadJSONFile(fileName: String) -> Data? {
-        guard let url = Bundle.main.url(forResource: fileName, withExtension: "json") else {
-               fatalError("Failed to locate book-of-mormon.json in bundle")
-           }
-           do {
-               return try Data(contentsOf: url)
-              
-           } catch {
-               fatalError("Failed to load file from bundle: \(error)")
-           }
+    func getBooksList() -> [Book] {
+        if primaryLang == "English" {
+            return BOM_BOOKS
+        } else if primaryLang == "Spanish" {
+            return BOM_BOOKS_SPANISH
+        } else if primaryLang == "Tagalog" {
+            return BOM_BOOKS_TAGALOG
+        } else {
+            return BOM_BOOKS_CEBUANO
+        }
     }
     
+    func getCurrentBookNameByLanguage() -> String {
+        var correctName = ""
+        
+        if primaryLang == "English" {
+            correctName = standardizeName(bookName: currentBook)
+        }
+        
+        
+        return correctName
+    }
+    
+    func showAbbreviation() -> String {
+        var booksList = getBooksList()
+        
+        return booksList.filter({ $0.name == currentBook }).first?.abbreviation ?? ""
+    }
+
+    func getPrimaryFileName() -> String {
+        switch primaryLang {
+        case "English":
+            return "book-of-mormon"
+        case "Spanish":
+            return "spanish-bom"
+        case "Cebuano":
+            return "cebuano-bom"
+        default:
+            return "tagalog-bom"
+        }
+    }
+    
+    func getSecondaryFileName() -> String {
+        switch secondaryLang {
+        case "English":
+            return "book-of-mormon"
+        case "Spanish":
+            return "spanish-bom"
+        case "Cebuano":
+            return "cebuano-bom"
+        default:
+            return "tagalog-bom"
+        }
+    }
+    
+    func standardizeName(bookName: String) -> String {
+        var standardizedBookName = ""
+
+        switch bookName {
+        case "1 Nefi", "1 Nephi":
+            standardizedBookName = "1 Nephi"
+        case "2 Nefi", "2 Nephi":
+            standardizedBookName = "2 Nephi"
+        case "Jacob":
+            standardizedBookName = "Jacob"
+        case "Enós", "Enos":
+            standardizedBookName = "Enos"
+        case "Jarom":
+            standardizedBookName = "Jarom"
+        case "Omni":
+            standardizedBookName = "Omni"
+        case "Palabras de Mormón", "Mga Salita ni Mormon", "Mga Pulong ni Mormon", "Words of Mormon":
+            standardizedBookName = "Words of Mormon"
+        case "Mosíah", "Mosiah":
+            standardizedBookName = "Mosiah"
+        case "Alma":
+            standardizedBookName = "Alma"
+        case "Helamán", "Helaman":
+            standardizedBookName = "Helaman"
+        case "3 Nefi", "3 Nephi":
+            standardizedBookName = "3 Nephi"
+        case "4 Nefi", "4 Nephi":
+            standardizedBookName = "4 Nephi"
+        case "Mormón", "Mormon":
+            standardizedBookName = "Mormon"
+        case "Éter", "Eter", "Ether":
+            standardizedBookName = "Ether"
+        case "Moroni":
+            standardizedBookName = "Moroni"
+        default:
+            standardizedBookName = ""
+        }
+        
+        return standardizedBookName
+    }
+    
+    func correctBook(bookName: String) -> Bool {
+        
+        var standardizedBookName = standardizeName(bookName: currentBook)
+        
+        return standardizedBookName == bookName
+    }
+
+    func loadJSONFile(fileName: String) -> Data? {
+        guard
+            let url = Bundle.main.url(
+                forResource: fileName,
+                withExtension: "json"
+            )
+        else {
+            fatalError("Failed to locate book-of-mormon.json in bundle")
+        }
+        do {
+            return try Data(contentsOf: url)
+
+        } catch {
+            fatalError("Failed to load file from bundle: \(error)")
+        }
+    }
+
     func getBOMData() {
-        
+
         // init the chapters count for the selected book
-        
+
         var engBOM: EnglishBOM
         var tglBOM: EnglishBOM
-        
+
         var bookIndex = 0
-        
+
         var evd: [VerseEng] = []
         var tvd: [VerseEng] = []
         // secondary language
-        if let jsonData = loadJSONFile(fileName: "book-of-mormon") {
+        if let jsonData = loadJSONFile(fileName: getSecondaryFileName()) {
             let decoder = JSONDecoder()
-            
+
             do {
                 engBOM = try decoder.decode(EnglishBOM.self, from: jsonData)
                 // loop over the list and get the secondary language info
                 for locBook in engBOM.books {
-                    if locBook.book == currentBook {
+                    if correctBook(bookName: locBook.book) {
                         break
                     }
                     bookIndex += 1
                 }
-                
+
                 var chapterIndex = Int(currentChapter) ?? 0
                 evd = engBOM.books[bookIndex].chapters[chapterIndex - 1].verses
-                
-                
+
             } catch {
                 print("Error decoding JSON: \(error)")
             }
         }
         
         // primary language
-        if let jsonData = loadJSONFile(fileName: "tagalog-bom") {
+        if let jsonData = loadJSONFile(fileName: getPrimaryFileName()) {
             let decoder = JSONDecoder()
-            
+
             do {
                 tglBOM = try decoder.decode(EnglishBOM.self, from: jsonData)
                 // we can use the index we found above to get there quickly
                 var chapterIndex = Int(currentChapter) ?? 0
-                print(bookIndex)
-                print(chapterIndex)
+               
                 tvd = tglBOM.books[bookIndex].chapters[chapterIndex - 1].verses
-                
-                
+
             } catch {
                 print("Error decoding JSON: \(error)")
             }
         }
-        
+
         var count = evd.count
-        
+
         for i in 0..<count {
             verseData.append(
-                DualLanguageVerse(knownLangVerse: evd[i].text, targetLangVerse: tvd[i].text, showTargetLang: true, verse: evd[i].verse)
+                DualLanguageVerse(
+                    knownLangVerse: evd[i].text,
+                    targetLangVerse: tvd[i].text,
+                    showTargetLang: true,
+                    verse: evd[i].verse
+                )
             )
         }
-        
+
     }
 
     var body: some View {
         ZStack {
             VStack {
-                
+
             }
             .frame(width: 230, height: 45)
             .background(.blue)
             .cornerRadius(12)
             .offset(y: 369)
             VStack {
-                
+
             }
             .frame(width: 60, height: 45)
             .background(.mint)
             .cornerRadius(12)
             .offset(x: -153, y: 369)
             VStack {
-                
+
             }
             .frame(width: 60, height: 45)
             .background(.mint)
@@ -127,7 +238,9 @@ struct VersesView: View {
                             HStack {
                                 VStack {
                                     Text("\(verse.verse)")
-                                        .font(.custom("Poppins-Regular", size: 13))
+                                        .font(
+                                            .custom("Poppins-Regular", size: 13)
+                                        )
                                         .frame(alignment: .bottomLeading)
                                         .foregroundStyle(.blue)
                                     Spacer()
@@ -138,36 +251,42 @@ struct VersesView: View {
                                         .overlay(.mint)
                                         .cornerRadius(5)
                                 }
-                                Text(verse.showTargetLang ? verse.targetLangVerse : verse.knownLangVerse)
-                                    .font(.custom("Inder-Regular", size: 18))
-                                    .foregroundStyle(.gray)
-                                    .onTapGesture {
-                                        if !showBooksList && !showLanguages {
-                                            withAnimation(.spring(.bouncy(duration: 0.3))) {
-                                                verse.showTargetLang.toggle()
-                                                
-                                            }
+                                Text(
+                                    verse.showTargetLang
+                                        ? verse.targetLangVerse
+                                        : verse.knownLangVerse
+                                )
+                                .font(.custom("Inder-Regular", size: 18))
+                                .foregroundStyle(.gray)
+                                .onTapGesture {
+                                    if !showBooksList && !showLanguages {
+                                        withAnimation(
+                                            .spring(.bouncy(duration: 0.3))
+                                        ) {
+                                            verse.showTargetLang.toggle()
+
                                         }
-                                        showBooksList = false
-                                        
                                     }
-                                
+                                    showBooksList = false
+
+                                }
+
                                 Spacer()
-                                
+
                             }
                             .frame(width: 380)
                             .padding(2)
-                            
+
                         }
                         .background(Color.clear)
                     }.frame(width: 450)
-                        .scrollContentBackground(.hidden) // Hides the default list background
+                        .scrollContentBackground(.hidden)  // Hides the default list background
                         .background(Color.clear)
                 }
                 Spacer()
                 HStack {
                     Button {
-                        
+
                     } label: {
                         Image(systemName: "chevron.left")
                             .font(.custom("Poppins-Regular", size: 30))
@@ -176,7 +295,14 @@ struct VersesView: View {
                     }
                     .frame(width: 60)
                     .background(
-                        LinearGradient(gradient: Gradient(colors: [.versesBackground, .chapterBorder, .chapterBorder, .chapterBorder, .chapterBorder]),startPoint: .leading, endPoint: .trailing)
+                        LinearGradient(
+                            gradient: Gradient(colors: [
+                                .versesBackground, .chapterBorder,
+                                .chapterBorder, .chapterBorder, .chapterBorder,
+                            ]),
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
                     )
                     .cornerRadius(10)
                     .overlay(
@@ -184,10 +310,10 @@ struct VersesView: View {
                             .stroke(.blue, lineWidth: 0.2)
                     )
                     HStack {
-                        Text("\(currentBook)")
+                        Text("\(showAbbreviation())")
                             .font(.custom("Poppins-Regular", size: 35))
                             .foregroundStyle(.black)
-                        
+
                         Text(":")
                             .font(.custom("Poppins-Regular", size: 30))
                             .foregroundStyle(.black)
@@ -197,7 +323,14 @@ struct VersesView: View {
                     }
                     .frame(width: 230, height: 45)
                     .background(
-                        LinearGradient(gradient: Gradient(colors: [.versesBackground, .chapterBorder, .chapterBorder, .chapterBorder, .chapterBorder]),startPoint: .top, endPoint: .bottom)
+                        LinearGradient(
+                            gradient: Gradient(colors: [
+                                .versesBackground, .chapterBorder,
+                                .chapterBorder, .chapterBorder, .chapterBorder,
+                            ]),
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
                     )
                     .cornerRadius(10)
                     .overlay(
@@ -208,7 +341,7 @@ struct VersesView: View {
                         showBooksList = true
                     }
                     Button {
-                        
+
                     } label: {
                         Image(systemName: "chevron.right")
                             .font(.custom("Poppins-Regular", size: 30))
@@ -217,7 +350,14 @@ struct VersesView: View {
                     }
                     .frame(width: 60)
                     .background(
-                        LinearGradient(gradient: Gradient(colors: [.versesBackground, .chapterBorder, .chapterBorder, .chapterBorder, .chapterBorder]),startPoint: .leading, endPoint: .trailing)
+                        LinearGradient(
+                            gradient: Gradient(colors: [
+                                .versesBackground, .chapterBorder,
+                                .chapterBorder, .chapterBorder, .chapterBorder,
+                            ]),
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
                     )
                     .cornerRadius(10)
                     .overlay(
@@ -233,7 +373,7 @@ struct VersesView: View {
                 }
                 .toolbar {
                     if !showLanguages {
-                        ToolbarItem(placement: .navigationBarTrailing) { // or .navigationBarLeading
+                        ToolbarItem(placement: .navigationBarTrailing) {  // or .navigationBarLeading
                             Button {
                                 withAnimation(.easeInOut(duration: 0.3)) {
                                     showLanguages = true
@@ -246,9 +386,12 @@ struct VersesView: View {
                 }
             if showLanguages {
                 VStack {
-                    
+
                 }
-                .frame(width: showLanguages ? 300 : 0, height: showLanguages ? 150: 0)
+                .frame(
+                    width: showLanguages ? 300 : 0,
+                    height: showLanguages ? 150 : 0
+                )
                 .background(.mint)
                 .cornerRadius(12)
                 .offset(x: showLanguages ? 30 : 0, y: showLanguages ? -340 : 0)
@@ -258,13 +401,20 @@ struct VersesView: View {
                             HStack(spacing: 20) {
                                 VStack {
                                     Text("Primary Language")
-                                        .font(.custom("Poppins-Regular", size: 13))
+                                        .font(
+                                            .custom("Poppins-Regular", size: 13)
+                                        )
                                         .foregroundStyle(.white)
                                     Button {
                                         showPrimaryLangOptions = true
                                     } label: {
-                                        Text(primaryLang)
-                                            .font(.custom("Poppins-Regular", size: 13))
+                                        Text(tempPLang)
+                                            .font(
+                                                .custom(
+                                                    "Poppins-Regular",
+                                                    size: 13
+                                                )
+                                            )
                                             .foregroundStyle(.black)
                                     }
                                     .frame(width: 100, height: 40)
@@ -272,19 +422,26 @@ struct VersesView: View {
                                     .cornerRadius(5)
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 5)
-                                            .stroke(.mint, lineWidth: 1) // 2. Apply border to same shape
+                                            .stroke(.mint, lineWidth: 1)  // 2. Apply border to same shape
                                     )
                                 }
-                                
+
                                 VStack {
                                     Text("Secondary Language")
-                                        .font(.custom("Poppins-Regular", size: 13))
+                                        .font(
+                                            .custom("Poppins-Regular", size: 13)
+                                        )
                                         .foregroundStyle(.white)
                                     Button {
                                         showSecondaryLangOptions = true
                                     } label: {
-                                        Text(secondaryLang)
-                                            .font(.custom("Poppins-Regular", size: 13))
+                                        Text(tempSLang)
+                                            .font(
+                                                .custom(
+                                                    "Poppins-Regular",
+                                                    size: 13
+                                                )
+                                            )
                                             .foregroundStyle(.black)
                                     }
                                     .frame(width: 100, height: 40)
@@ -292,7 +449,7 @@ struct VersesView: View {
                                     .cornerRadius(5)
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 5)
-                                            .stroke(.mint, lineWidth: 1) // 2. Apply border to same shape
+                                            .stroke(.mint, lineWidth: 1)  // 2. Apply border to same shape
                                     )
                                 }
                             }
@@ -300,28 +457,52 @@ struct VersesView: View {
                                 Spacer()
                                 HStack {
                                     Button {
-                                        withAnimation(.easeInOut(duration: 0.1)) {
+                                        withAnimation(.easeInOut(duration: 0.1))
+                                        {
+                                            tempPLang = primaryLang
+                                            tempSLang = secondaryLang
                                             showLanguages = false
+                                            showSecondaryLangOptions = false
+                                            showPrimaryLangOptions = false
                                         }
                                     } label: {
                                         Text("CANCEL")
-                                            .font(.custom("Poppins-Regular", size: 12))
+                                            .font(
+                                                .custom(
+                                                    "Poppins-Regular",
+                                                    size: 12
+                                                )
+                                            )
                                             .foregroundStyle(.brown)
                                     }
                                     .frame(width: 80, height: 30)
                                     .cornerRadius(5)
                                     Button {
-                                        withAnimation(.easeInOut(duration: 0.1)) {
+                                        withAnimation(.easeInOut(duration: 0.1))
+                                        {
+                                            primaryLang = tempPLang
+                                            secondaryLang = tempSLang
+                                            tempPLang = primaryLang
+                                            tempSLang = secondaryLang
                                             showLanguages = false
+                                            showSecondaryLangOptions = false
+                                            showPrimaryLangOptions = false
+                                            
+                                            currentBook = "HI"
                                         }
                                     } label: {
                                         Text("CHANGE")
-                                            .font(.custom("Poppins-Regular", size: 12))
+                                            .font(
+                                                .custom(
+                                                    "Poppins-Regular",
+                                                    size: 12
+                                                )
+                                            )
                                             .foregroundStyle(.blue)
                                     }
                                     .frame(width: 80, height: 30)
                                     .cornerRadius(5)
-                                    
+
                                 }
                             }
                             .padding(.top, 20)
@@ -339,15 +520,21 @@ struct VersesView: View {
                         }
                     }
                 }
-                .frame(width: showLanguages ? 300 : 60, height: showLanguages ? 150: 48)
+                .frame(
+                    width: showLanguages ? 300 : 60,
+                    height: showLanguages ? 150 : 48
+                )
                 .background(Color.chapterBorder)
-                
+
                 .cornerRadius(10)
                 .overlay(
                     RoundedRectangle(cornerRadius: 10)
                         .stroke(.mint, lineWidth: 0.2)
                 )
-                .offset(x: showLanguages ? 30 : 150, y: showLanguages ? -335 :-385)
+                .offset(
+                    x: showLanguages ? 30 : 150,
+                    y: showLanguages ? -335 : -385
+                )
                 .shadow(color: Color.black.opacity(0.5), radius: 2, x: 3, y: 4)
             }
             if showPrimaryLangOptions {
@@ -357,7 +544,7 @@ struct VersesView: View {
                         .frame(height: 30)
                         .foregroundStyle(.black)
                         .onTapGesture {
-                            primaryLang = "English"
+                            tempPLang = "English"
                             showPrimaryLangOptions = false
                         }
                     Text("Spanish")
@@ -365,7 +552,7 @@ struct VersesView: View {
                         .frame(height: 30)
                         .foregroundStyle(.black)
                         .onTapGesture {
-                            primaryLang = "Spanish"
+                            tempPLang = "Spanish"
                             showPrimaryLangOptions = false
                         }
                     Text("Tagalog")
@@ -373,7 +560,7 @@ struct VersesView: View {
                         .frame(height: 30)
                         .foregroundStyle(.black)
                         .onTapGesture {
-                            primaryLang = "Tagalog"
+                            tempPLang = "Tagalog"
                             showPrimaryLangOptions = false
                         }
                     Text("Cebuano")
@@ -381,7 +568,7 @@ struct VersesView: View {
                         .frame(height: 30)
                         .foregroundStyle(.black)
                         .onTapGesture {
-                            primaryLang = "Cebuano"
+                            tempPLang = "Cebuano"
                             showPrimaryLangOptions = false
                         }
                 }
@@ -396,7 +583,7 @@ struct VersesView: View {
                         .frame(height: 30)
                         .foregroundStyle(.black)
                         .onTapGesture {
-                            secondaryLang = "English"
+                            tempSLang = "English"
                             showSecondaryLangOptions = false
                         }
                     Text("Spanish")
@@ -404,7 +591,7 @@ struct VersesView: View {
                         .frame(height: 30)
                         .foregroundStyle(.black)
                         .onTapGesture {
-                            secondaryLang = "Spanish"
+                            tempSLang = "Spanish"
                             showSecondaryLangOptions = false
                         }
                     Text("Tagalog")
@@ -412,7 +599,7 @@ struct VersesView: View {
                         .frame(height: 30)
                         .foregroundStyle(.black)
                         .onTapGesture {
-                            secondaryLang = "Tagalog"
+                            tempSLang = "Tagalog"
                             showSecondaryLangOptions = false
                         }
                     Text("Cebuano")
@@ -420,7 +607,7 @@ struct VersesView: View {
                         .frame(height: 30)
                         .foregroundStyle(.black)
                         .onTapGesture {
-                            secondaryLang = "Cebuano"
+                            tempSLang = "Cebuano"
                             showSecondaryLangOptions = false
                         }
                 }
@@ -433,49 +620,65 @@ struct VersesView: View {
                     HStack {
                         ScrollViewReader { scrollView in
                             ScrollView {
-                                ForEach(BOM_BOOKS, id: \.self.name) { book in
+                                ForEach(getBooksList(), id: \.self.name) {
+                                    book in
                                     Text(book.abbreviation)
-                                        .font(.custom("Poppins-Regular", size: 30))
+                                        .font(
+                                            .custom("Poppins-Regular", size: 30)
+                                        )
                                         .foregroundStyle(.black)
                                         .onTapGesture {
-                                            withAnimation(.easeInOut(duration: 0.2)) {
-                                                currentBook = book.abbreviation
+                                            withAnimation(
+                                                .easeInOut(duration: 0.2)
+                                            ) {
+                                                currentBook = book.name
                                                 totalChapters = 0
-                                                totalChapters = book.chapterCount
+                                                totalChapters =
+                                                    book.chapterCount
                                                 currentChapter = "1"
                                             }
                                             //showBooksList = false
                                             // then update the chapters list based on what I just clicked
                                         }
                                         .frame(width: 270, height: 40)
-                                        .background(book.name == currentBook ? .mint.opacity(0.1) : .chapterBorder)
+                                        .background(
+                                            book.name == currentBook
+                                                ? .mint.opacity(0.1)
+                                                : .chapterBorder
+                                        )
                                         .cornerRadius(10)
-                                        .padding(book.name == currentBook ? 5 : 0)
+                                        .padding(
+                                            book.name == currentBook ? 5 : 0
+                                        )
                                 }
                             }
                             .frame(width: 280, height: 450)
-                            
+
                             .onAppear {
-                                scrollView.scrollTo(currentBook, anchor: .center)
+                                scrollView.scrollTo(
+                                    currentBook,
+                                    anchor: .center
+                                )
                             }
                         }
                         Divider()
                             .frame(width: 2)
                             .overlay(.black)
-                        
-                        ScrollView() {
+
+                        ScrollView {
                             ForEach(0..<totalChapters, id: \.self) { chapter in
                                 Text("\(chapter + 1)")
                                     .font(.custom("Poppins-Regular", size: 30))
                                     .transition(.move(edge: .bottom))
                                     .foregroundStyle(.mint.opacity(0.2))
                                     .onTapGesture {
-                                        withAnimation(.easeInOut(duration: 0.2)) {
+                                        withAnimation(.easeInOut(duration: 0.2))
+                                        {
                                             currentChapter = String(chapter + 1)
                                             showBooksList = false
                                         }
                                     }
-                                   .padding(.trailing, 25)
+                                    .padding(.trailing, 25)
                             }
                         }
                         .frame(width: showBooksList ? 80 : 0, height: 440)
@@ -485,26 +688,39 @@ struct VersesView: View {
                 }
                 .frame(width: 380, height: 460)
                 .cornerRadius(30)
-                .background(Color.chapterBorder.shadow(color: Color.black.opacity(0.5), radius: 2, x: 3, y: 4))
+                .background(
+                    Color.chapterBorder.shadow(
+                        color: Color.black.opacity(0.5),
+                        radius: 2,
+                        x: 3,
+                        y: 4
+                    )
+                )
                 .offset(x: 0, y: 100)
                 .transition(.scale(scale: 0.1))
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity) // Make the frame
+        .frame(maxWidth: .infinity, maxHeight: .infinity)  // Make the frame
         .background(.versesBackground)
         .ignoresSafeArea()
-        .onAppear() {
+        .onAppear {
             getBOMData()
             showBooksList = false
             showLanguages = false
             showPrimaryLangOptions = false
             showSecondaryLangOptions = false
+            tempPLang = primaryLang
+            tempSLang = secondaryLang
         }
-       
+
     }
 }
 
 #Preview {
-    VersesView()
+    VersesView(
+        primaryLang: "Spanish",
+        secondaryLang: "English",
+        currentBook: "Jarom",
+        currentChapter: "1"
+    )
 }
-
