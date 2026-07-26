@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 var BOM_BOOKS: [Book] = [
     Book(name: "1 Nephi", chapterCount: 22, abbreviation: "1 Nephi"),
     Book(name: "2 Nephi", chapterCount: 33, abbreviation: "2 Nephi"),
@@ -41,6 +42,23 @@ var BOM_BOOKS_SPANISH: [Book] = [
     Book(name: "Éter", chapterCount: 15, abbreviation: "Éter"),
     Book(name: "Moroni", chapterCount: 10, abbreviation: "Moroni"),
 ]
+var ENG_TO_ESP: [String: String] = [
+    "1 Nephi": "1 Nefi",
+    "2 Nephi": "2 Nefi",
+    "Jacob": "Jacob",
+    "Enos": "Enós",
+    "Jarom": "Jarom",
+    "Omni": "Omni",
+    "Words of Mormon": "Palabras de Mormón",
+    "Mosiah": "Mosíah",
+    "Alma": "Alma",
+    "Helaman": "Helamán",
+    "3 Nephi": "3 Nefi",
+    "4 Nephi": "4 Nefi",
+    "Mormon": "Mormón",
+    "Ether": "Éter",
+    "Moroni": "Moroni",
+]
 
 var BOM_BOOKS_TAGALOG: [Book] = [
     Book(name: "1 Nephi", chapterCount: 22, abbreviation: "1 Nephi"),
@@ -58,6 +76,24 @@ var BOM_BOOKS_TAGALOG: [Book] = [
     Book(name: "Mormon", chapterCount: 9, abbreviation: "Mormon"),
     Book(name: "Eter", chapterCount: 15, abbreviation: "Eter"),
     Book(name: "Moroni", chapterCount: 10, abbreviation: "Moroni"),
+]
+
+var ENG_TO_TAG: [String: String] = [
+    "1 Nephi": "1 Nephi",
+    "2 Nephi": "2 Nephi",
+    "Jacob": "Jacob",
+    "Enos": "Enos",
+    "Jarom": "Jarom",
+    "Omni": "Omni",
+    "Words of Mormon": "Mga Salita ni Mormon",
+    "Mosiah": "Mosiah",
+    "Alma": "Alma",
+    "Helaman": "Helaman",
+    "3 Nephi": "3 Nephi",
+    "4 Nephi": "4 Nephi",
+    "Mormon": "Mormon",
+    "Ether": "Eter",
+    "Moroni": "Moroni",
 ]
 
 var BOM_BOOKS_CEBUANO: [Book] = [
@@ -78,9 +114,26 @@ var BOM_BOOKS_CEBUANO: [Book] = [
     Book(name: "Moroni", chapterCount: 10, abbreviation: "Moroni"),
 ]
 
+var ENG_TO_CEB: [String: String] = [
+    "1 Nephi": "1 Nephi",
+    "2 Nephi": "2 Nephi",
+    "Jacob": "Jacob",
+    "Enos": "Enos",
+    "Jarom": "Jarom",
+    "Omni": "Omni",
+    "Words of Mormon": "Mga Pulong ni Mormon",
+    "Mosiah": "Mosiah",
+    "Alma": "Alma",
+    "Helaman": "Helaman",
+    "3 Nephi": "3 Nephi",
+    "4 Nephi": "4 Nephi",
+    "Mormon": "Mormon",
+    "Ether": "Ether",
+    "Moroni": "Moroni",
+]
+
 struct Book: Hashable {
     let name: String
     let chapterCount: Int
     let abbreviation: String
 }
-

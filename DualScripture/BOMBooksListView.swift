@@ -8,17 +8,29 @@
 import SwiftUI
 
 struct BOMBooksListView: View {
-    @State var primaryLang: String
-    @State var secondaryLang: String
+    @Binding var primaryLang: String
+    @Binding var secondaryLang: String
     @State var chosenBook: String = "1 Nephi"
     
+    func getBooksList() -> [Book] {
+        if primaryLang == "English" {
+            return BOM_BOOKS
+        } else if primaryLang == "Spanish" {
+            return BOM_BOOKS_SPANISH
+        } else if primaryLang == "Cebuano" {
+            return BOM_BOOKS_CEBUANO
+        } else {
+            return BOM_BOOKS_TAGALOG
+        }
+                
+    }
     var body: some View {
         VStack {
             List {
-                ForEach (BOM_BOOKS, id: \.self.name) { book in
+                ForEach (getBooksList(), id: \.self.name) { book in
                     
                     if book.chapterCount > 1 {
-                        NavigationLink(destination: BOMChaptersListView(primaryLang: primaryLang, secondaryLang: secondaryLang, chaptersCount: book.chapterCount, bomBook: book.name)) {
+                        NavigationLink(destination: BOMChaptersListView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, chaptersCount: book.chapterCount, bomBook: book.name)) {
                             HStack {
                                 VStack() {
                                     Spacer()
@@ -41,7 +53,7 @@ struct BOMBooksListView: View {
                         .listRowBackground(Color.black)
                         .navigationLinkIndicatorVisibility(.hidden)
                     } else {
-                        NavigationLink(destination: VersesView(primaryLang: primaryLang, secondaryLang: secondaryLang, currentBook: book.name, currentChapter: "1")) {
+                        NavigationLink(destination: BOMChaptersListView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, chaptersCount: book.chapterCount, bomBook: book.name)) {
                             HStack {
                                 VStack() {
                                     Spacer()
@@ -75,5 +87,5 @@ struct BOMBooksListView: View {
 }
 
 #Preview {
-    BOMBooksListView(primaryLang: "Tagalog", secondaryLang: "English")
+    BOMBooksListView(primaryLang: .constant("Tagalog"), secondaryLang: .constant("English"))
 }

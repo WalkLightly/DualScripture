@@ -9,21 +9,32 @@ import SwiftUI
 
 struct VersesView: View {
     var languages: [String] = ["Tagalog", "English", "Spanish", "Cebuano"]
-    @State var primaryLang: String
-    @State var secondaryLang: String
-    @State var currentBook: String
+    @Binding var primaryLang: String
+    @Binding var secondaryLang: String
+    @Binding var currentBook: String
+    @Binding var currentChapter: Int
 
     @State var verseData: [DualLanguageVerse] = []
-    @State var currentChapter: String
 
     @State var showBooksList: Bool = false
-    @State var totalChapters: Int = 5
+    @State var totalChapters: Int
     @State var showLanguages: Bool = false
     @State var showSecondaryLangOptions: Bool = false
     @State var showPrimaryLangOptions: Bool = false
     @State private var tempPLang: String = ""
     @State private var tempSLang: String = ""
-
+    @State private var bookIndex: Int = 0
+    
+    
+    func translateName() -> Void {
+        
+        // first translate to english
+        let standard = standardizeName(bookName: currentBook)
+        
+        // then translate to newly selected target language
+        currentBook = translateBookName(standardBookName: standard)
+    }
+    
     func getBooksList() -> [Book] {
         if primaryLang == "English" {
             return BOM_BOOKS
@@ -48,7 +59,7 @@ struct VersesView: View {
     }
     
     func showAbbreviation() -> String {
-        var booksList = getBooksList()
+        let booksList = getBooksList()
         
         return booksList.filter({ $0.name == currentBook }).first?.abbreviation ?? ""
     }
@@ -122,7 +133,7 @@ struct VersesView: View {
     
     func correctBook(bookName: String) -> Bool {
         
-        var standardizedBookName = standardizeName(bookName: currentBook)
+        let standardizedBookName = standardizeName(bookName: currentBook)
         
         return standardizedBookName == bookName
     }
@@ -144,14 +155,16 @@ struct VersesView: View {
         }
     }
 
-    func getBOMData() {
+    func getBOMData(resetBookIndex: Bool = false) {
 
         // init the chapters count for the selected book
-
+        verseData = []
         var engBOM: EnglishBOM
         var tglBOM: EnglishBOM
 
-        var bookIndex = 0
+        if resetBookIndex {
+            bookIndex = 0
+        }
 
         var evd: [VerseEng] = []
         var tvd: [VerseEng] = []
@@ -162,14 +175,16 @@ struct VersesView: View {
             do {
                 engBOM = try decoder.decode(EnglishBOM.self, from: jsonData)
                 // loop over the list and get the secondary language info
-                for locBook in engBOM.books {
-                    if correctBook(bookName: locBook.book) {
-                        break
+                if bookIndex == 0 {
+                    for locBook in engBOM.books {
+                        if correctBook(bookName: locBook.book) {
+                            break
+                        }
+                        bookIndex += 1
                     }
-                    bookIndex += 1
                 }
 
-                var chapterIndex = Int(currentChapter) ?? 0
+                let chapterIndex = currentChapter
                 evd = engBOM.books[bookIndex].chapters[chapterIndex - 1].verses
 
             } catch {
@@ -184,7 +199,7 @@ struct VersesView: View {
             do {
                 tglBOM = try decoder.decode(EnglishBOM.self, from: jsonData)
                 // we can use the index we found above to get there quickly
-                var chapterIndex = Int(currentChapter) ?? 0
+                let chapterIndex = currentChapter
                
                 tvd = tglBOM.books[bookIndex].chapters[chapterIndex - 1].verses
 
@@ -193,7 +208,7 @@ struct VersesView: View {
             }
         }
 
-        var count = evd.count
+        let count = evd.count
 
         for i in 0..<count {
             verseData.append(
@@ -221,14 +236,14 @@ struct VersesView: View {
 
             }
             .frame(width: 60, height: 45)
-            .background(.mint)
+            .background(bookIndex == 0 && currentChapter == 1 ? .gray : .mint)
             .cornerRadius(12)
             .offset(x: -153, y: 369)
             VStack {
 
             }
             .frame(width: 60, height: 45)
-            .background(.mint)
+            .background(bookIndex == 14 && currentChapter == 10 ? .gray : .mint)
             .cornerRadius(12)
             .offset(x: 153, y: 369)
             VStack {
@@ -239,7 +254,7 @@ struct VersesView: View {
                                 VStack {
                                     Text("\(verse.verse)")
                                         .font(
-                                            .custom("Poppins-Regular", size: 13)
+                                            .custom("Inder-Regular", size: 18)
                                         )
                                         .frame(alignment: .bottomLeading)
                                         .foregroundStyle(.blue)
@@ -286,14 +301,25 @@ struct VersesView: View {
                 Spacer()
                 HStack {
                     Button {
-
+                        if currentChapter - 1 > 0 {
+                            currentChapter -= 1
+                        } else {
+                            bookIndex -= 1
+                            currentChapter = getNewCurrentChapter()
+                            currentBook = getNewCurrentBook()
+                            totalChapters = getNewCurrentChapter()
+                        }
+                        
+                        getBOMData()
                     } label: {
                         Image(systemName: "chevron.left")
                             .font(.custom("Poppins-Regular", size: 30))
                             .foregroundStyle(.black)
                             .padding(8)
+                            .opacity(bookIndex == 0 && currentChapter == 1 ? 0.3 : 1)
                     }
                     .frame(width: 60)
+                    .opacity(bookIndex == 0 && currentChapter == 1 ? 0.3 : 1)
                     .background(
                         LinearGradient(
                             gradient: Gradient(colors: [
@@ -307,8 +333,9 @@ struct VersesView: View {
                     .cornerRadius(10)
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
-                            .stroke(.blue, lineWidth: 0.2)
+                            .stroke(bookIndex == 0 && currentChapter == 1 ? .gray : .mint, lineWidth: bookIndex == 0 && currentChapter == 1 ? 0.2 : 0.5)
                     )
+                    .disabled(bookIndex == 0 && currentChapter == 1)
                     HStack {
                         Text("\(showAbbreviation())")
                             .font(.custom("Poppins-Regular", size: 35))
@@ -335,20 +362,32 @@ struct VersesView: View {
                     .cornerRadius(10)
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
-                            .stroke(.blue, lineWidth: 0.2)
+                            .stroke(.blue, lineWidth: 0.5)
                     )
                     .onTapGesture {
                         showBooksList = true
                     }
                     Button {
-
+                        if currentChapter + 1 <= totalChapters {
+                            currentChapter += 1
+                        } else {
+                            bookIndex += 1
+                            currentChapter = 1
+                            currentBook = getNewCurrentBook()
+                            totalChapters = getNewCurrentChapter()
+                        }
+                        
+                        getBOMData()
                     } label: {
                         Image(systemName: "chevron.right")
                             .font(.custom("Poppins-Regular", size: 30))
                             .foregroundStyle(.black)
                             .padding(8)
+                            .opacity(bookIndex == 14 && currentChapter == 10 ? 0.3 : 1)
                     }
                     .frame(width: 60)
+                    .disabled(bookIndex == 14 && currentChapter == 10)
+                    .opacity(bookIndex == 14 && currentChapter == 10 ? 0.3 : 1)
                     .background(
                         LinearGradient(
                             gradient: Gradient(colors: [
@@ -362,7 +401,7 @@ struct VersesView: View {
                     .cornerRadius(10)
                     .overlay(
                         RoundedRectangle(cornerRadius: 10)
-                            .stroke(.blue, lineWidth: 0.2)
+                            .stroke(bookIndex == 14 && currentChapter == 10 ? .gray : .mint, lineWidth: bookIndex == 14 && currentChapter == 10 ? 0.2 : 0.5)
                     )
                 }
                 .frame(width: 370)
@@ -488,7 +527,11 @@ struct VersesView: View {
                                             showSecondaryLangOptions = false
                                             showPrimaryLangOptions = false
                                             
-                                            currentBook = "HI"
+                                            // update the book name with the new language
+                                            translateName()
+                                            
+                                            // refresh the verses with the new language
+                                            getBOMData()
                                         }
                                     } label: {
                                         Text("CHANGE")
@@ -635,7 +678,10 @@ struct VersesView: View {
                                                 totalChapters = 0
                                                 totalChapters =
                                                     book.chapterCount
-                                                currentChapter = "1"
+                                                print(totalChapters)
+                                                currentChapter = 1
+                                                
+                                                getBOMData(resetBookIndex: true)
                                             }
                                             //showBooksList = false
                                             // then update the chapters list based on what I just clicked
@@ -674,8 +720,9 @@ struct VersesView: View {
                                     .onTapGesture {
                                         withAnimation(.easeInOut(duration: 0.2))
                                         {
-                                            currentChapter = String(chapter + 1)
+                                            currentChapter = chapter + 1
                                             showBooksList = false
+                                            getBOMData(resetBookIndex: true)
                                         }
                                     }
                                     .padding(.trailing, 25)
@@ -704,7 +751,7 @@ struct VersesView: View {
         .background(.versesBackground)
         .ignoresSafeArea()
         .onAppear {
-            getBOMData()
+            getBOMData(resetBookIndex: true)
             showBooksList = false
             showLanguages = false
             showPrimaryLangOptions = false
@@ -714,13 +761,54 @@ struct VersesView: View {
         }
 
     }
+    
+    func translateBookName(standardBookName: String) -> String {
+        var newName = ""
+
+        if primaryLang == "Spanish" {
+            newName = ENG_TO_ESP[standardBookName]!
+        } else if primaryLang == "Tagalog" {
+            newName = ENG_TO_TAG[standardBookName]!
+        } else if primaryLang == "Cebuano" {
+            newName = ENG_TO_CEB[standardBookName]!
+        } else {
+            newName = standardBookName
+        }
+        
+        return newName
+    }
+    
+    func getNewCurrentChapter() -> Int {
+        if primaryLang == "English" {
+            return BOM_BOOKS[bookIndex].chapterCount
+        } else if primaryLang == "Spanish" {
+            return BOM_BOOKS_SPANISH[bookIndex].chapterCount
+        } else if primaryLang == "Cebuano" {
+            return BOM_BOOKS_CEBUANO[bookIndex].chapterCount
+        } else {
+            return BOM_BOOKS_TAGALOG[bookIndex].chapterCount
+        }
+    }
+    
+    func getNewCurrentBook() -> String {
+        if primaryLang == "English" {
+            return BOM_BOOKS[bookIndex].name
+        } else if primaryLang == "Spanish" {
+            return BOM_BOOKS_SPANISH[bookIndex].name
+        } else if primaryLang == "Cebuano" {
+            return BOM_BOOKS_CEBUANO[bookIndex].name
+        } else {
+            return BOM_BOOKS_TAGALOG[bookIndex].name
+        }
+    }
 }
 
 #Preview {
     VersesView(
-        primaryLang: "Spanish",
-        secondaryLang: "English",
-        currentBook: "Jarom",
-        currentChapter: "1"
+        primaryLang: .constant("Spanish"),
+        secondaryLang: .constant("English"),
+        currentBook: .constant("Moroni"),
+        currentChapter: .constant(10),
+        totalChapters: 4
     )
 }

@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct BOMChaptersListView: View {
-    @State var primaryLang: String
-    @State var secondaryLang: String
+    @Binding var primaryLang: String
+    @Binding var secondaryLang: String
     @State var chaptersCount: Int
     @State var bomBook: String
     
@@ -41,7 +41,7 @@ struct BOMChaptersListView: View {
             HStack {
                 ForEach (1..<chaptersCount) { chapter in
                     if chapter < 7 {
-                        NavigationLink(destination: VersesView(primaryLang: primaryLang, secondaryLang: secondaryLang, currentBook: bomBook, currentChapter: String(chapter))) {
+                        NavigationLink(destination: VersesView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, currentBook: $bomBook, currentChapter: chapter, totalChapters: $chaptersCount)) {
                             Text("\(chapter)")
                                 .font(.custom("Poppins-Regular", size: 17))
                                 .foregroundStyle(.white)
@@ -59,7 +59,7 @@ struct BOMChaptersListView: View {
                 HStack {
                     ForEach (7..<13) { chapter in
                         if chapter <= chaptersCount {
-                            NavigationLink(destination: VersesView(primaryLang: primaryLang, secondaryLang: secondaryLang, currentBook: bomBook, currentChapter: String(chapter))) {
+                            NavigationLink(destination: VersesView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, currentBook: $bomBook, currentChapter: chapter, totalChapters: $chaptersCount)) {
                                 Text("\(chapter)")
                                     .font(.custom("Poppins-Regular", size: 17))
                                     .foregroundStyle(.white)
@@ -78,7 +78,7 @@ struct BOMChaptersListView: View {
                 HStack {
                     ForEach (13..<19) { chapter in
                         if chapter <= chaptersCount {
-                            NavigationLink(destination: VersesView(primaryLang: primaryLang, secondaryLang: secondaryLang, currentBook: bomBook, currentChapter: String(chapter))) {
+                            NavigationLink(destination: VersesView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, currentBook: $bomBook, currentChapter: chapter, totalChapters: $chaptersCount)) {
                                 Text("\(chapter)")
                                     .font(.custom("Poppins-Regular", size: 17))
                                     .foregroundStyle(.white)
@@ -97,7 +97,7 @@ struct BOMChaptersListView: View {
                 HStack {
                     ForEach (19..<25) { chapter in
                         if chapter <= chaptersCount {
-                            NavigationLink(destination: VersesView(primaryLang: primaryLang, secondaryLang: secondaryLang, currentBook: bomBook, currentChapter: String(chapter))) {
+                            NavigationLink(destination: VersesView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, currentBook: $bomBook, currentChapter: chapter, totalChapters: $chaptersCount)) {
                                 Text("\(chapter)")
                                     .font(.custom("Poppins-Regular", size: 17))
                                     .foregroundStyle(.white)
@@ -116,7 +116,7 @@ struct BOMChaptersListView: View {
                 HStack {
                     ForEach (25..<31) { chapter in
                         if chapter <= chaptersCount {
-                            NavigationLink(destination: VersesView(primaryLang: primaryLang, secondaryLang: secondaryLang, currentBook: bomBook, currentChapter: String(chapter))) {
+                            NavigationLink(destination: VersesView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, currentBook: $bomBook, currentChapter: chapter, totalChapters: $chaptersCount)) {
                                 Text("\(chapter)")
                                     .font(.custom("Poppins-Regular", size: 17))
                                     .foregroundStyle(.white)
@@ -135,7 +135,7 @@ struct BOMChaptersListView: View {
                 HStack {
                     ForEach (31..<37) { chapter in
                         if chapter <= chaptersCount {
-                            NavigationLink(destination: VersesView(primaryLang: primaryLang, secondaryLang: secondaryLang, currentBook: bomBook, currentChapter: String(chapter))) {
+                            NavigationLink(destination: VersesView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, currentBook: $bomBook, currentChapter: chapter, totalChapters: $chaptersCount)) {
                                 Text("\(chapter)")
                                     .font(.custom("Poppins-Regular", size: 17))
                                     .foregroundStyle(.white)
@@ -154,7 +154,7 @@ struct BOMChaptersListView: View {
                 HStack {
                     ForEach (37..<43) { chapter in
                         if chapter <= chaptersCount {
-                            NavigationLink(destination: VersesView(primaryLang: primaryLang, secondaryLang: secondaryLang, currentBook: bomBook, currentChapter: String(chapter))) {
+                            NavigationLink(destination: VersesView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, currentBook: $bomBook, currentChapter: chapter, totalChapters: $chaptersCount)) {
                                 Text("\(chapter)")
                                     .font(.custom("Poppins-Regular", size: 17))
                                     .foregroundStyle(.white)
@@ -173,7 +173,7 @@ struct BOMChaptersListView: View {
                 HStack {
                     ForEach (43..<49) { chapter in
                         if chapter <= chaptersCount {
-                            NavigationLink(destination: VersesView(primaryLang: primaryLang, secondaryLang: secondaryLang, currentBook: bomBook, currentChapter: String(chapter))) {
+                            NavigationLink(destination: VersesView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, currentBook: $bomBook, currentChapter: chapter, totalChapters: $chaptersCount)) {
                                 Text("\(chapter)")
                                     .font(.custom("Poppins-Regular", size: 17))
                                     .foregroundStyle(.white)
@@ -192,7 +192,7 @@ struct BOMChaptersListView: View {
                 HStack {
                     ForEach (49..<55) { chapter in
                         if chapter <= chaptersCount {
-                            NavigationLink(destination: VersesView(primaryLang: primaryLang, secondaryLang: secondaryLang, currentBook: bomBook, currentChapter: String(chapter))) {
+                            NavigationLink(destination: VersesView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, currentBook: $bomBook, currentChapter: chapter, totalChapters: $chaptersCount)) {
                                 Text("\(chapter)")
                                     .font(.custom("Poppins-Regular", size: 17))
                                     .foregroundStyle(.white)
@@ -211,7 +211,7 @@ struct BOMChaptersListView: View {
                 HStack {
                     ForEach (55..<61) { chapter in
                         if chapter <= chaptersCount {
-                            NavigationLink(destination: VersesView(primaryLang: primaryLang, secondaryLang: secondaryLang, currentBook: bomBook, currentChapter: String(chapter))) {
+                            NavigationLink(destination: VersesView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, currentBook: $bomBook, currentChapter: chapter, totalChapters: $chaptersCount)) {
                                 Text("\(chapter)")
                                     .font(.custom("Poppins-Regular", size: 17))
                                     .foregroundStyle(.white)
@@ -230,7 +230,7 @@ struct BOMChaptersListView: View {
                 HStack {
                     ForEach (61..<67) { chapter in
                         if chapter <= chaptersCount {
-                            NavigationLink(destination: VersesView(primaryLang: primaryLang, secondaryLang: secondaryLang, currentBook: bomBook, currentChapter: String(chapter))) {
+                            NavigationLink(destination: VersesView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, currentBook: $bomBook, currentChapter: chapter, totalChapters: $chaptersCount)) {
                                 Text("\(chapter)")
                                     .font(.custom("Poppins-Regular", size: 17))
                                     .foregroundStyle(.white)
@@ -253,5 +253,5 @@ struct BOMChaptersListView: View {
 }
 
 #Preview {
-    BOMChaptersListView(primaryLang: "Tagalog", secondaryLang: "English", chaptersCount: 1, bomBook: "1 Nephi")
+    BOMChaptersListView(primaryLang: .constant("Tagalog"), secondaryLang: .constant("English"), chaptersCount: 1, bomBook: "1 Nephi")
 }

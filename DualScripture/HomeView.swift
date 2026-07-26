@@ -27,7 +27,7 @@ struct HomeView: View {
                 Color.mainBackground.ignoresSafeArea(.all).opacity(0.6)
                 VStack {
                     HStack {
-                        NavigationLink(destination: BOMBooksListView(primaryLang: primaryLang, secondaryLang: secondaryLang)) {
+                        NavigationLink(destination: BOMBooksListView(primaryLang: $primaryLang, secondaryLang: $secondaryLang)) {
                             VStack {
                                 VStack {
                                     Rectangle()

@@ -4,6 +4,7 @@
 <dict>
 	<key>UIAppFonts</key>
 	<array>
+		<string>PTSansNarrow-Bold.ttf</string>
 		<string>PTSansNarrow-Regular.ttf</string>
 		<string>Poppins-Regular.ttf</string>
 		<string>Inder-Regular.ttf</string>
