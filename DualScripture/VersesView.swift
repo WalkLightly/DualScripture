@@ -12,12 +12,12 @@ struct VersesView: View {
     @Binding var primaryLang: String
     @Binding var secondaryLang: String
     @Binding var currentBook: String
-    @Binding var currentChapter: Int
+    @State var currentChapter: Int
 
     @State var verseData: [DualLanguageVerse] = []
 
     @State var showBooksList: Bool = false
-    @State var totalChapters: Int
+    @Binding var totalChapters: Int
     @State var showLanguages: Bool = false
     @State var showSecondaryLangOptions: Bool = false
     @State var showPrimaryLangOptions: Bool = false
@@ -226,27 +226,6 @@ struct VersesView: View {
     var body: some View {
         ZStack {
             VStack {
-
-            }
-            .frame(width: 230, height: 45)
-            .background(.blue)
-            .cornerRadius(12)
-            .offset(y: 369)
-            VStack {
-
-            }
-            .frame(width: 60, height: 45)
-            .background(bookIndex == 0 && currentChapter == 1 ? .gray : .mint)
-            .cornerRadius(12)
-            .offset(x: -153, y: 369)
-            VStack {
-
-            }
-            .frame(width: 60, height: 45)
-            .background(bookIndex == 14 && currentChapter == 10 ? .gray : .mint)
-            .cornerRadius(12)
-            .offset(x: 153, y: 369)
-            VStack {
                 ScrollView {
                     ForEach($verseData, id: \.self.verse) { $verse in
                         VStack {
@@ -259,7 +238,7 @@ struct VersesView: View {
                                         .frame(alignment: .bottomLeading)
                                         .foregroundStyle(.blue)
                                     Spacer()
-                                }.frame(width: 20)
+                                }.frame(width: 30)
                                 if !verse.showTargetLang {
                                     Divider()
                                         .frame(width: 5)
@@ -289,14 +268,24 @@ struct VersesView: View {
                                 Spacer()
 
                             }
-                            .frame(width: 380)
+                            .containerRelativeFrame(.horizontal) { length, axis in
+                                return length * 0.8
+                            }
                             .padding(2)
 
                         }
                         .background(Color.clear)
-                    }.frame(width: 450)
-                        .scrollContentBackground(.hidden)  // Hides the default list background
-                        .background(Color.clear)
+                    }
+                    .frame(width: 500)
+                    .scrollContentBackground(.hidden)  // Hides the default list background
+                    .background(Color.clear)
+                }
+                .padding(.top, 30)
+                .containerRelativeFrame(.horizontal) { length, axis in
+                    return length * 0.9
+                }
+                .containerRelativeFrame(.vertical) { length, axis in
+                    return length * 0.95
                 }
                 Spacer()
                 HStack {
@@ -320,20 +309,25 @@ struct VersesView: View {
                     }
                     .frame(width: 60)
                     .opacity(bookIndex == 0 && currentChapter == 1 ? 0.3 : 1)
-                    .background(
-                        LinearGradient(
-                            gradient: Gradient(colors: [
-                                .versesBackground, .chapterBorder,
-                                .chapterBorder, .chapterBorder, .chapterBorder,
-                            ]),
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
                     .cornerRadius(10)
-                    .overlay(
+                    .background(
+                        // --- Top Layer: The button itself ---
                         RoundedRectangle(cornerRadius: 10)
-                            .stroke(bookIndex == 0 && currentChapter == 1 ? .gray : .mint, lineWidth: bookIndex == 0 && currentChapter == 1 ? 0.2 : 0.5)
+                            .fill(.chapterBorder)
+                            .overlay(
+                                // Add the thin black border
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(bookIndex == 0 && currentChapter == 1 ? .gray : .mint.opacity(0.4), lineWidth: 1)
+                            )
+                    )
+                    .background(
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(bookIndex == 0 && currentChapter == 1 ? .gray: .mint)
+                        }
+                        // The magic offsets:
+                        .offset(x: 0, y: 2)  // Slightly right, heavily down
+                        .scaleEffect(x: 0.99, y: 1.0)
                     )
                     .disabled(bookIndex == 0 && currentChapter == 1)
                     HStack {
@@ -349,20 +343,25 @@ struct VersesView: View {
                             .foregroundStyle(.black)
                     }
                     .frame(width: 230, height: 45)
-                    .background(
-                        LinearGradient(
-                            gradient: Gradient(colors: [
-                                .versesBackground, .chapterBorder,
-                                .chapterBorder, .chapterBorder, .chapterBorder,
-                            ]),
-                            startPoint: .top,
-                            endPoint: .bottom
-                        )
-                    )
                     .cornerRadius(10)
-                    .overlay(
+                    .background(
+                        // --- Top Layer: The button itself ---
                         RoundedRectangle(cornerRadius: 10)
-                            .stroke(.blue, lineWidth: 0.5)
+                            .fill(.chapterBorder)
+                            .overlay(
+                                // Add the thin black border
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(.blue, lineWidth: 1)
+                            )
+                    )
+                    .background(
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(.blue)
+                        }
+                        // The magic offsets:
+                        .offset(x: 0, y: 3)  // Slightly right, heavily down
+                        .scaleEffect(x: 0.99, y: 1.0)
                     )
                     .onTapGesture {
                         showBooksList = true
@@ -388,24 +387,35 @@ struct VersesView: View {
                     .frame(width: 60)
                     .disabled(bookIndex == 14 && currentChapter == 10)
                     .opacity(bookIndex == 14 && currentChapter == 10 ? 0.3 : 1)
-                    .background(
-                        LinearGradient(
-                            gradient: Gradient(colors: [
-                                .versesBackground, .chapterBorder,
-                                .chapterBorder, .chapterBorder, .chapterBorder,
-                            ]),
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
                     .cornerRadius(10)
-                    .overlay(
+                    .background(
+                        // --- Top Layer: The button itself ---
                         RoundedRectangle(cornerRadius: 10)
-                            .stroke(bookIndex == 14 && currentChapter == 10 ? .gray : .mint, lineWidth: bookIndex == 14 && currentChapter == 10 ? 0.2 : 0.5)
+                            .fill(.chapterBorder)
+                            .overlay(
+                                // Add the thin black border
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(bookIndex == 14 && currentChapter == 10 ? .gray : .mint.opacity(0.4), lineWidth: 1)
+                            )
+                    )
+                    .background(
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(bookIndex == 14 && currentChapter == 10 ? .gray : .mint)
+                        }
+                        // The magic offsets:
+                        .offset(x: 0, y: 2)  // Slightly right, heavily down
+                        .scaleEffect(x: 0.99, y: 1.0)
                     )
                 }
                 .frame(width: 370)
-            }.frame(width: 450, height: 750)
+            }
+            .containerRelativeFrame(.horizontal) { length, axis in
+                return length * 0.8
+            }
+            .containerRelativeFrame(.vertical) { length, axis in
+                return length * 0.978
+            }
                 .padding(.top, 30)
                 .onTapGesture {
                     showBooksList = false
@@ -716,7 +726,7 @@ struct VersesView: View {
                                 Text("\(chapter + 1)")
                                     .font(.custom("Poppins-Regular", size: 30))
                                     .transition(.move(edge: .bottom))
-                                    .foregroundStyle(.mint.opacity(0.2))
+                                    .foregroundStyle(.blue.opacity(0.6))
                                     .onTapGesture {
                                         withAnimation(.easeInOut(duration: 0.2))
                                         {
@@ -734,15 +744,10 @@ struct VersesView: View {
                     .frame(height: 450)
                 }
                 .frame(width: 380, height: 460)
-                .cornerRadius(30)
-                .background(
-                    Color.chapterBorder.shadow(
-                        color: Color.black.opacity(0.5),
-                        radius: 2,
-                        x: 3,
-                        y: 4
-                    )
-                )
+                .background(.chapterBorder)
+                .cornerRadius(10)
+                .shadow(color: Color.black.opacity(0.4), radius: 1, x: 2, y: 3)
+
                 .offset(x: 0, y: 100)
                 .transition(.scale(scale: 0.1))
             }
@@ -807,8 +812,8 @@ struct VersesView: View {
     VersesView(
         primaryLang: .constant("Spanish"),
         secondaryLang: .constant("English"),
-        currentBook: .constant("Moroni"),
-        currentChapter: .constant(10),
-        totalChapters: 4
+        currentBook: .constant("1 Nefi"),
+        currentChapter: 1,
+        totalChapters: .constant(4)
     )
 }

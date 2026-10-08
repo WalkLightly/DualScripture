@@ -12,23 +12,44 @@ struct BOMChaptersListView: View {
     @Binding var secondaryLang: String
     @State var chaptersCount: Int
     @State var bomBook: String
+
+    let columns = [
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+    ]
     
+    func changeChaptersCount() -> Void {
+        chaptersCount = 3
+        print(chaptersCount)
+    }
+
     var body: some View {
         VStack {
             ZStack {
                 VStack {
-                    
+
                 }
-                .frame(width: 230, height: 45)
+                .frame(width: bomBook.count > 10 ? 350 : 230, height: 45)
                 .background(.blue)
                 .cornerRadius(12)
                 .offset(x: 0, y: 2)
                 Text(bomBook)
                     .foregroundStyle(Color.black)
-                    .font(.custom("Poppins-Regular", size: 30))
-                    .frame(width: 230, height: 45)
+                    .font(.custom("Poppins-Regular", size: 25))
+                    .frame(width: bomBook.count > 10 ? 350 : 230, height: 45)
                     .background(
-                        LinearGradient(gradient: Gradient(colors: [.versesBackground, .chapterBorder, .chapterBorder, .chapterBorder, .chapterBorder]),startPoint: .leading, endPoint: .trailing)
+                        LinearGradient(
+                            gradient: Gradient(colors: [
+                                .versesBackground, .chapterBorder,
+                                .chapterBorder, .chapterBorder, .chapterBorder,
+                            ]),
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
                     )
                     .cornerRadius(10)
                     .overlay(
@@ -37,214 +58,246 @@ struct BOMChaptersListView: View {
                     )
             }
             .padding(.bottom, 20)
-            
-            HStack {
-                ForEach (1..<chaptersCount) { chapter in
-                    if chapter < 7 {
-                        NavigationLink(destination: VersesView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, currentBook: $bomBook, currentChapter: chapter, totalChapters: $chaptersCount)) {
-                            Text("\(chapter)")
-                                .font(.custom("Poppins-Regular", size: 17))
-                                .foregroundStyle(.white)
-                        }
-                        .frame(width: 55, height: 55)
-                        .background(.chapterButtons)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 5)
-                                .stroke(Color.chapterBorder, lineWidth: 1) // 2. Apply border to same shape
-                        )
-                    }
-                }
-            }
-            if chaptersCount > 6 {
-                HStack {
-                    ForEach (7..<13) { chapter in
-                        if chapter <= chaptersCount {
-                            NavigationLink(destination: VersesView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, currentBook: $bomBook, currentChapter: chapter, totalChapters: $chaptersCount)) {
+            VStack {
+                ScrollView {
+                    LazyVGrid(columns: columns, spacing: 16) {
+                        ForEach(1..<chaptersCount + 1, id: \.self) { chapter in
+                            NavigationLink(
+                                destination: VersesView(
+                                    primaryLang: $primaryLang,
+                                    secondaryLang: $secondaryLang,
+                                    currentBook: $bomBook,
+                                    currentChapter: chapter,
+                                    totalChapters: $chaptersCount
+                                )
+                            ) {
                                 Text("\(chapter)")
                                     .font(.custom("Poppins-Regular", size: 17))
                                     .foregroundStyle(.white)
                             }
-                            .frame(width: 55, height: 55)
+                            .frame(width: 50, height: 50)
                             .background(.chapterButtons)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 5)
-                                    .stroke(Color.chapterBorder, lineWidth: 1) // 2. Apply border to same shape
+                                    .stroke(Color.chapterBorder, lineWidth: 1)  // 2. Apply border to same shape
                             )
                         }
                     }
                 }
-            }
-            if chaptersCount > 12 {
-                HStack {
-                    ForEach (13..<19) { chapter in
-                        if chapter <= chaptersCount {
-                            NavigationLink(destination: VersesView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, currentBook: $bomBook, currentChapter: chapter, totalChapters: $chaptersCount)) {
-                                Text("\(chapter)")
-                                    .font(.custom("Poppins-Regular", size: 17))
-                                    .foregroundStyle(.white)
-                            }
-                            .frame(width: 55, height: 55)
-                            .background(.chapterButtons)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 5)
-                                    .stroke(Color.chapterBorder, lineWidth: 1) // 2. Apply border to same shape
-                            )
-                        }
-                    }
+                .containerRelativeFrame(.horizontal) { length, axis in
+                    return length * 0.9
+                }
+                .containerRelativeFrame(.vertical) { length, axis in
+                    return length * 0.9
                 }
             }
-            if chaptersCount > 18 {
-                HStack {
-                    ForEach (19..<25) { chapter in
-                        if chapter <= chaptersCount {
-                            NavigationLink(destination: VersesView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, currentBook: $bomBook, currentChapter: chapter, totalChapters: $chaptersCount)) {
-                                Text("\(chapter)")
-                                    .font(.custom("Poppins-Regular", size: 17))
-                                    .foregroundStyle(.white)
-                            }
-                            .frame(width: 55, height: 55)
-                            .background(.chapterButtons)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 5)
-                                    .stroke(Color.chapterBorder, lineWidth: 1) // 2. Apply border to same shape
-                            )
-                        }
-                    }
-                }
-            }
-            if chaptersCount > 24 {
-                HStack {
-                    ForEach (25..<31) { chapter in
-                        if chapter <= chaptersCount {
-                            NavigationLink(destination: VersesView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, currentBook: $bomBook, currentChapter: chapter, totalChapters: $chaptersCount)) {
-                                Text("\(chapter)")
-                                    .font(.custom("Poppins-Regular", size: 17))
-                                    .foregroundStyle(.white)
-                            }
-                            .frame(width: 55, height: 55)
-                            .background(.chapterButtons)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 5)
-                                    .stroke(Color.chapterBorder, lineWidth: 1) // 2. Apply border to same shape
-                            )
-                        }
-                    }
-                }
-            }
-            if chaptersCount > 30 {
-                HStack {
-                    ForEach (31..<37) { chapter in
-                        if chapter <= chaptersCount {
-                            NavigationLink(destination: VersesView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, currentBook: $bomBook, currentChapter: chapter, totalChapters: $chaptersCount)) {
-                                Text("\(chapter)")
-                                    .font(.custom("Poppins-Regular", size: 17))
-                                    .foregroundStyle(.white)
-                            }
-                            .frame(width: 55, height: 55)
-                            .background(.chapterButtons)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 5)
-                                    .stroke(Color.chapterBorder, lineWidth: 1) // 2. Apply border to same shape
-                            )
-                        }
-                    }
-                }
-            }
-            if chaptersCount > 36 {
-                HStack {
-                    ForEach (37..<43) { chapter in
-                        if chapter <= chaptersCount {
-                            NavigationLink(destination: VersesView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, currentBook: $bomBook, currentChapter: chapter, totalChapters: $chaptersCount)) {
-                                Text("\(chapter)")
-                                    .font(.custom("Poppins-Regular", size: 17))
-                                    .foregroundStyle(.white)
-                            }
-                            .frame(width: 55, height: 55)
-                            .background(.chapterButtons)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 5)
-                                    .stroke(Color.chapterBorder, lineWidth: 1) // 2. Apply border to same shape
-                            )
-                        }
-                    }
-                }
-            }
-            if chaptersCount > 42 {
-                HStack {
-                    ForEach (43..<49) { chapter in
-                        if chapter <= chaptersCount {
-                            NavigationLink(destination: VersesView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, currentBook: $bomBook, currentChapter: chapter, totalChapters: $chaptersCount)) {
-                                Text("\(chapter)")
-                                    .font(.custom("Poppins-Regular", size: 17))
-                                    .foregroundStyle(.white)
-                            }
-                            .frame(width: 55, height: 55)
-                            .background(.chapterButtons)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 5)
-                                    .stroke(Color.chapterBorder, lineWidth: 1) // 2. Apply border to same shape
-                            )
-                        }
-                    }
-                }
-            }
-            if chaptersCount > 48 {
-                HStack {
-                    ForEach (49..<55) { chapter in
-                        if chapter <= chaptersCount {
-                            NavigationLink(destination: VersesView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, currentBook: $bomBook, currentChapter: chapter, totalChapters: $chaptersCount)) {
-                                Text("\(chapter)")
-                                    .font(.custom("Poppins-Regular", size: 17))
-                                    .foregroundStyle(.white)
-                            }
-                            .frame(width: 55, height: 55)
-                            .background(.chapterButtons)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 5)
-                                    .stroke(Color.chapterBorder, lineWidth: 1) // 2. Apply border to same shape
-                            )
-                        }
-                    }
-                }
-            }
-            if chaptersCount > 54 {
-                HStack {
-                    ForEach (55..<61) { chapter in
-                        if chapter <= chaptersCount {
-                            NavigationLink(destination: VersesView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, currentBook: $bomBook, currentChapter: chapter, totalChapters: $chaptersCount)) {
-                                Text("\(chapter)")
-                                    .font(.custom("Poppins-Regular", size: 17))
-                                    .foregroundStyle(.white)
-                            }
-                            .frame(width: 55, height: 55)
-                            .background(.chapterButtons)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 5)
-                                    .stroke(Color.chapterBorder, lineWidth: 1) // 2. Apply border to same shape
-                            )
-                        }
-                    }
-                }
-            }
-            if chaptersCount > 60 {
-                HStack {
-                    ForEach (61..<67) { chapter in
-                        if chapter <= chaptersCount {
-                            NavigationLink(destination: VersesView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, currentBook: $bomBook, currentChapter: chapter, totalChapters: $chaptersCount)) {
-                                Text("\(chapter)")
-                                    .font(.custom("Poppins-Regular", size: 17))
-                                    .foregroundStyle(.white)
-                            }
-                            .frame(width: 55, height: 55)
-                            .background(.chapterButtons)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 5)
-                                    .stroke(Color.chapterBorder, lineWidth: 1) // 2. Apply border to same shape
-                            )
-                        }
-                    }
-                }
-            }
+            //            HStack {
+            //                ForEach (1..<chaptersCount) { chapter in
+            //                    if chapter < 7 {
+            //                        NavigationLink(destination: VersesView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, currentBook: $bomBook, currentChapter: chapter, totalChapters: $chaptersCount)) {
+            //                            Text("\(chapter)")
+            //                                .font(.custom("Poppins-Regular", size: 17))
+            //                                .foregroundStyle(.white)
+            //                        }
+            //                        .frame(width: 55, height: 55)
+            //                        .background(.chapterButtons)
+            //                        .overlay(
+            //                            RoundedRectangle(cornerRadius: 5)
+            //                                .stroke(Color.chapterBorder, lineWidth: 1) // 2. Apply border to same shape
+            //                        )
+            //                    }
+            //                }
+            //            }
+            //            if chaptersCount > 6 {
+            //                HStack {
+            //                    ForEach (7..<13) { chapter in
+            //                        if chapter <= chaptersCount {
+            //                            NavigationLink(destination: VersesView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, currentBook: $bomBook, currentChapter: chapter, totalChapters: $chaptersCount)) {
+            //                                Text("\(chapter)")
+            //                                    .font(.custom("Poppins-Regular", size: 17))
+            //                                    .foregroundStyle(.white)
+            //                            }
+            //                            .frame(width: 55, height: 55)
+            //                            .background(.chapterButtons)
+            //                            .overlay(
+            //                                RoundedRectangle(cornerRadius: 5)
+            //                                    .stroke(Color.chapterBorder, lineWidth: 1) // 2. Apply border to same shape
+            //                            )
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //            if chaptersCount > 12 {
+            //                HStack {
+            //                    ForEach (13..<19) { chapter in
+            //                        if chapter <= chaptersCount {
+            //                            NavigationLink(destination: VersesView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, currentBook: $bomBook, currentChapter: chapter, totalChapters: $chaptersCount)) {
+            //                                Text("\(chapter)")
+            //                                    .font(.custom("Poppins-Regular", size: 17))
+            //                                    .foregroundStyle(.white)
+            //                            }
+            //                            .frame(width: 55, height: 55)
+            //                            .background(.chapterButtons)
+            //                            .overlay(
+            //                                RoundedRectangle(cornerRadius: 5)
+            //                                    .stroke(Color.chapterBorder, lineWidth: 1) // 2. Apply border to same shape
+            //                            )
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //            if chaptersCount > 18 {
+            //                HStack {
+            //                    ForEach (19..<25) { chapter in
+            //                        if chapter <= chaptersCount {
+            //                            NavigationLink(destination: VersesView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, currentBook: $bomBook, currentChapter: chapter, totalChapters: $chaptersCount)) {
+            //                                Text("\(chapter)")
+            //                                    .font(.custom("Poppins-Regular", size: 17))
+            //                                    .foregroundStyle(.white)
+            //                            }
+            //                            .frame(width: 55, height: 55)
+            //                            .background(.chapterButtons)
+            //                            .overlay(
+            //                                RoundedRectangle(cornerRadius: 5)
+            //                                    .stroke(Color.chapterBorder, lineWidth: 1) // 2. Apply border to same shape
+            //                            )
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //            if chaptersCount > 24 {
+            //                HStack {
+            //                    ForEach (25..<31) { chapter in
+            //                        if chapter <= chaptersCount {
+            //                            NavigationLink(destination: VersesView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, currentBook: $bomBook, currentChapter: chapter, totalChapters: $chaptersCount)) {
+            //                                Text("\(chapter)")
+            //                                    .font(.custom("Poppins-Regular", size: 17))
+            //                                    .foregroundStyle(.white)
+            //                            }
+            //                            .frame(width: 55, height: 55)
+            //                            .background(.chapterButtons)
+            //                            .overlay(
+            //                                RoundedRectangle(cornerRadius: 5)
+            //                                    .stroke(Color.chapterBorder, lineWidth: 1) // 2. Apply border to same shape
+            //                            )
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //            if chaptersCount > 30 {
+            //                HStack {
+            //                    ForEach (31..<37) { chapter in
+            //                        if chapter <= chaptersCount {
+            //                            NavigationLink(destination: VersesView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, currentBook: $bomBook, currentChapter: chapter, totalChapters: $chaptersCount)) {
+            //                                Text("\(chapter)")
+            //                                    .font(.custom("Poppins-Regular", size: 17))
+            //                                    .foregroundStyle(.white)
+            //                            }
+            //                            .frame(width: 55, height: 55)
+            //                            .background(.chapterButtons)
+            //                            .overlay(
+            //                                RoundedRectangle(cornerRadius: 5)
+            //                                    .stroke(Color.chapterBorder, lineWidth: 1) // 2. Apply border to same shape
+            //                            )
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //            if chaptersCount > 36 {
+            //                HStack {
+            //                    ForEach (37..<43) { chapter in
+            //                        if chapter <= chaptersCount {
+            //                            NavigationLink(destination: VersesView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, currentBook: $bomBook, currentChapter: chapter, totalChapters: $chaptersCount)) {
+            //                                Text("\(chapter)")
+            //                                    .font(.custom("Poppins-Regular", size: 17))
+            //                                    .foregroundStyle(.white)
+            //                            }
+            //                            .frame(width: 55, height: 55)
+            //                            .background(.chapterButtons)
+            //                            .overlay(
+            //                                RoundedRectangle(cornerRadius: 5)
+            //                                    .stroke(Color.chapterBorder, lineWidth: 1) // 2. Apply border to same shape
+            //                            )
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //            if chaptersCount > 42 {
+            //                HStack {
+            //                    ForEach (43..<49) { chapter in
+            //                        if chapter <= chaptersCount {
+            //                            NavigationLink(destination: VersesView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, currentBook: $bomBook, currentChapter: chapter, totalChapters: $chaptersCount)) {
+            //                                Text("\(chapter)")
+            //                                    .font(.custom("Poppins-Regular", size: 17))
+            //                                    .foregroundStyle(.white)
+            //                            }
+            //                            .frame(width: 55, height: 55)
+            //                            .background(.chapterButtons)
+            //                            .overlay(
+            //                                RoundedRectangle(cornerRadius: 5)
+            //                                    .stroke(Color.chapterBorder, lineWidth: 1) // 2. Apply border to same shape
+            //                            )
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //            if chaptersCount > 48 {
+            //                HStack {
+            //                    ForEach (49..<55) { chapter in
+            //                        if chapter <= chaptersCount {
+            //                            NavigationLink(destination: VersesView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, currentBook: $bomBook, currentChapter: chapter, totalChapters: $chaptersCount)) {
+            //                                Text("\(chapter)")
+            //                                    .font(.custom("Poppins-Regular", size: 17))
+            //                                    .foregroundStyle(.white)
+            //                            }
+            //                            .frame(width: 55, height: 55)
+            //                            .background(.chapterButtons)
+            //                            .overlay(
+            //                                RoundedRectangle(cornerRadius: 5)
+            //                                    .stroke(Color.chapterBorder, lineWidth: 1) // 2. Apply border to same shape
+            //                            )
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //            if chaptersCount > 54 {
+            //                HStack {
+            //                    ForEach (55..<61) { chapter in
+            //                        if chapter <= chaptersCount {
+            //                            NavigationLink(destination: VersesView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, currentBook: $bomBook, currentChapter: chapter, totalChapters: $chaptersCount)) {
+            //                                Text("\(chapter)")
+            //                                    .font(.custom("Poppins-Regular", size: 17))
+            //                                    .foregroundStyle(.white)
+            //                            }
+            //                            .frame(width: 55, height: 55)
+            //                            .background(.chapterButtons)
+            //                            .overlay(
+            //                                RoundedRectangle(cornerRadius: 5)
+            //                                    .stroke(Color.chapterBorder, lineWidth: 1) // 2. Apply border to same shape
+            //                            )
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //            if chaptersCount > 60 {
+            //                HStack {
+            //                    ForEach (61..<67) { chapter in
+            //                        if chapter <= chaptersCount {
+            //                            NavigationLink(destination: VersesView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, currentBook: $bomBook, currentChapter: chapter, totalChapters: $chaptersCount)) {
+            //                                Text("\(chapter)")
+            //                                    .font(.custom("Poppins-Regular", size: 17))
+            //                                    .foregroundStyle(.white)
+            //                            }
+            //                            .frame(width: 55, height: 55)
+            //                            .background(.chapterButtons)
+            //                            .overlay(
+            //                                RoundedRectangle(cornerRadius: 5)
+            //                                    .stroke(Color.chapterBorder, lineWidth: 1) // 2. Apply border to same shape
+            //                            )
+            //                        }
+            //                    }
+            //                }
+            //            }
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -253,5 +306,10 @@ struct BOMChaptersListView: View {
 }
 
 #Preview {
-    BOMChaptersListView(primaryLang: .constant("Tagalog"), secondaryLang: .constant("English"), chaptersCount: 1, bomBook: "1 Nephi")
+    BOMChaptersListView(
+        primaryLang: .constant("Tagalog"),
+        secondaryLang: .constant("English"),
+        chaptersCount: 10,
+        bomBook: "Mga Pulong Ni Mormon"
+    )
 }
