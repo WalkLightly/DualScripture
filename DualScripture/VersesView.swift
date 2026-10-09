@@ -277,7 +277,7 @@ struct VersesView: View {
                         .background(Color.clear)
                     }
                     .frame(width: 500)
-                    .scrollContentBackground(.hidden)  // Hides the default list background
+                    .scrollContentBackground(.hidden)
                     .background(Color.clear)
                 }
                 .padding(.top, 30)
@@ -366,6 +366,95 @@ struct VersesView: View {
                     .onTapGesture {
                         showBooksList = true
                     }
+                    .overlay(alignment: .top) {
+                        if showBooksList {
+                            VStack {
+                                HStack {
+                                    ScrollViewReader { scrollView in
+                                        ScrollView {
+                                            VStack {
+                                                ForEach(getBooksList(), id: \.self.name) {
+                                                    book in
+                                                    Text(book.abbreviation)
+                                                        .font(
+                                                            .custom("Poppins-Regular", size: 30)
+                                                        )
+                                                        .foregroundStyle(.black)
+                                                        .onTapGesture {
+                                                            withAnimation(
+                                                                .easeInOut(duration: 0.2)
+                                                            ) {
+                                                                currentBook = book.name
+                                                                totalChapters = 0
+                                                                totalChapters =
+                                                                book.chapterCount
+                                                                print(totalChapters)
+                                                                currentChapter = 1
+                                                                
+                                                                getBOMData(resetBookIndex: true)
+                                                            }
+                                                            //showBooksList = false
+                                                            // then update the chapters list based on what I just clicked
+                                                        }
+                                                        .frame(width: 270, height: 40)
+                                                        .background(
+                                                            book.name == currentBook
+                                                            ? .mint.opacity(0.1)
+                                                            : .chapterBorder
+                                                        )
+                                                        .cornerRadius(10)
+                                                        .padding(
+                                                            book.name == currentBook ? 5 : 0
+                                                        )
+                                                }
+                                            }
+                                        }
+                                        .frame(width: 280, height: 450)
+
+                                        .onAppear {
+                                            scrollView.scrollTo(
+                                                currentBook,
+                                                anchor: .center
+                                            )
+                                        }
+                                    }
+                                    Divider()
+                                        .frame(width: 2)
+                                        .overlay(.black)
+
+                                    ScrollView {
+                                        VStack {
+                                            ForEach(0..<totalChapters, id: \.self) { chapter in
+                                                Text("\(chapter + 1)")
+                                                    .font(.custom("Poppins-Regular", size: 30))
+                                                    .transition(.move(edge: .bottom))
+                                                    .foregroundStyle(.blue.opacity(0.6))
+                                                    .onTapGesture {
+                                                        withAnimation(.easeInOut(duration: 0.2))
+                                                        {
+                                                            currentChapter = chapter + 1
+                                                            showBooksList = false
+                                                            getBOMData(resetBookIndex: true)
+                                                        }
+                                                    }
+                                                    .padding(.trailing, 25)
+                                            }
+                                        }
+                                    }
+                                    .frame(width: showBooksList ? 80 : 0, height: 440)
+                                    .transition(.move(edge: .trailing))
+                                }
+                                .frame(height: 450)
+                            }
+                            .frame(width: 380, height: 460)
+                            .background(.chapterBorder)
+                            .cornerRadius(10)
+                            .shadow(color: Color.black.opacity(0.4), radius: 1, x: 2, y: 3)
+                            .offset(x: 0, y: -468)
+                            //.alignmentGuide(.bottom) { d in d[.top] - 100 }
+                            .transition(.scale(scale: 0.1))
+                        }
+                    }
                     Button {
                         if currentChapter + 1 <= totalChapters {
                             currentChapter += 1
@@ -434,8 +523,8 @@ struct VersesView: View {
                     }
                 }
             if showLanguages {
-                VStack {
-
+            VStack {
+                    // ... (Empty placeholder if needed)
                 }
                 .frame(
                     width: showLanguages ? 300 : 0,
@@ -443,120 +532,165 @@ struct VersesView: View {
                 )
                 .background(.mint)
                 .cornerRadius(12)
-                .offset(x: showLanguages ? 30 : 0, y: showLanguages ? -340 : 0)
+                .offset(x: showLanguages ? 0 : 0, y: showLanguages ? 0 : 0)
+
                 VStack {
                     if showLanguages {
                         VStack {
                             HStack(spacing: 20) {
+                                // MARK: Primary Language
                                 VStack {
                                     Text("Primary Language")
-                                        .font(
-                                            .custom("Poppins-Regular", size: 13)
-                                        )
+                                        .font(.custom("Poppins-Regular", size: 13))
                                         .foregroundStyle(.white)
+
                                     Button {
-                                        showPrimaryLangOptions = true
+                                        showPrimaryLangOptions.toggle()
                                     } label: {
                                         Text(tempPLang)
-                                            .font(
-                                                .custom(
-                                                    "Poppins-Regular",
-                                                    size: 13
-                                                )
-                                            )
+                                            .font(.custom("Poppins-Regular", size: 13))
                                             .foregroundStyle(.black)
                                     }
                                     .frame(width: 100, height: 40)
                                     .background(.mint.opacity(0.2))
-                                    .cornerRadius(5)
-                                    .overlay(
+                                    .background(
                                         RoundedRectangle(cornerRadius: 5)
-                                            .stroke(.mint, lineWidth: 1)  // 2. Apply border to same shape
+                                            .stroke(.mint, lineWidth: 1)
                                     )
+                                    // MARK: Primary Dropdown Overlay
+                                    .overlay(alignment: .topLeading) {
+                                        if showPrimaryLangOptions {
+                                            VStack(spacing: 0) {
+                                                ForEach(["English", "Spanish", "Tagalog", "Cebuano"], id: \.self) { lang in
+                                                    Text(lang)
+                                                        .font(.custom("Poppins-Regular", size: 16))
+                                                        .frame(height: 35)
+                                                        .frame(maxWidth: .infinity)
+                                                        .foregroundStyle(.black)
+                                                        .contentShape(Rectangle())
+                                                        .onTapGesture {
+                                                            tempPLang = lang
+                                                            showPrimaryLangOptions = false
+                                                        }
+                                                }
+                                            }
+                                            .frame(width: 110, height: 150)
+                                            .background(Color.white)
+                                            .cornerRadius(8)
+                                            .shadow(color: .black.opacity(0.3), radius: 5, x: 0, y: 3)
+                                            .offset(y: 45)  // Drops menu directly below the button
+                                            .zIndex(100)    // High z-index keeps it on top of CANCEL/CHANGE
+                                        }
+                                    }
                                 }
 
+                                // MARK: Secondary Language
                                 VStack {
                                     Text("Secondary Language")
-                                        .font(
-                                            .custom("Poppins-Regular", size: 13)
-                                        )
+                                        .font(.custom("Poppins-Regular", size: 13))
                                         .foregroundStyle(.white)
+
                                     Button {
-                                        showSecondaryLangOptions = true
+                                        showSecondaryLangOptions.toggle()
                                     } label: {
                                         Text(tempSLang)
-                                            .font(
-                                                .custom(
-                                                    "Poppins-Regular",
-                                                    size: 13
-                                                )
-                                            )
+                                            .font(.custom("Poppins-Regular", size: 13))
                                             .foregroundStyle(.black)
                                     }
                                     .frame(width: 100, height: 40)
                                     .background(.mint.opacity(0.2))
-                                    .cornerRadius(5)
-                                    .overlay(
+                                    .background(
                                         RoundedRectangle(cornerRadius: 5)
-                                            .stroke(.mint, lineWidth: 1)  // 2. Apply border to same shape
+                                            .stroke(.mint, lineWidth: 1)
                                     )
+                                    .overlay(alignment: .topLeading) {
+                                        if showSecondaryLangOptions {
+                                            VStack {
+                                                Text("English")
+                                                    .font(.custom("Poppins-Regular", size: 20))
+                                                    .frame(height: 30)
+                                                    .foregroundStyle(.black)
+                                                    .onTapGesture {
+                                                        tempSLang = "English"
+                                                        showSecondaryLangOptions = false
+                                                    }
+                                                Text("Spanish")
+                                                    .font(.custom("Poppins-Regular", size: 20))
+                                                    .frame(height: 30)
+                                                    .foregroundStyle(.black)
+                                                    .onTapGesture {
+                                                        tempSLang = "Spanish"
+                                                        showSecondaryLangOptions = false
+                                                    }
+                                                Text("Tagalog")
+                                                    .font(.custom("Poppins-Regular", size: 20))
+                                                    .frame(height: 30)
+                                                    .foregroundStyle(.black)
+                                                    .onTapGesture {
+                                                        tempSLang = "Tagalog"
+                                                        showSecondaryLangOptions = false
+                                                    }
+                                                Text("Cebuano")
+                                                    .font(.custom("Poppins-Regular", size: 20))
+                                                    .frame(height: 30)
+                                                    .foregroundStyle(.black)
+                                                    .onTapGesture {
+                                                        tempSLang = "Cebuano"
+                                                        showSecondaryLangOptions = false
+                                                    }
+                                            }
+                                            .frame(width: 110, height: 150)
+                                            .background(Color.white)
+                                            .cornerRadius(8)
+                                            .shadow(color: .black.opacity(0.3), radius: 5, x: 0, y: 3)
+                                            .offset(y: 45)  // Drops menu directly below the button
+                                            .zIndex(150)    // High z-index keeps it on top of CANCEL/CHANGE
+                                        }
+                                    }
                                 }
                             }
+
+                            // MARK: Action Buttons
                             HStack {
                                 Spacer()
                                 HStack {
-                                    Button {
-                                        withAnimation(.easeInOut(duration: 0.1))
-                                        {
-                                            tempPLang = primaryLang
-                                            tempSLang = secondaryLang
-                                            showLanguages = false
-                                            showSecondaryLangOptions = false
-                                            showPrimaryLangOptions = false
+                                    if !showSecondaryLangOptions {
+                                        Button {
+                                            withAnimation(.easeInOut(duration: 0.1)) {
+                                                tempPLang = primaryLang
+                                                tempSLang = secondaryLang
+                                                showLanguages = false
+                                                showSecondaryLangOptions = false
+                                                showPrimaryLangOptions = false
+                                            }
+                                        } label: {
+                                            Text("CANCEL")
+                                                .font(.custom("Poppins-Regular", size: 12))
+                                                .foregroundStyle(.brown)
                                         }
-                                    } label: {
-                                        Text("CANCEL")
-                                            .font(
-                                                .custom(
-                                                    "Poppins-Regular",
-                                                    size: 12
-                                                )
-                                            )
-                                            .foregroundStyle(.brown)
-                                    }
-                                    .frame(width: 80, height: 30)
-                                    .cornerRadius(5)
-                                    Button {
-                                        withAnimation(.easeInOut(duration: 0.1))
-                                        {
-                                            primaryLang = tempPLang
-                                            secondaryLang = tempSLang
-                                            tempPLang = primaryLang
-                                            tempSLang = secondaryLang
-                                            showLanguages = false
-                                            showSecondaryLangOptions = false
-                                            showPrimaryLangOptions = false
-                                            
-                                            // update the book name with the new language
-                                            translateName()
-                                            
-                                            // refresh the verses with the new language
-                                            getBOMData()
+                                        .frame(width: 80, height: 30)
+                                        
+                                        Button {
+                                            withAnimation(.easeInOut(duration: 0.1)) {
+                                                primaryLang = tempPLang
+                                                secondaryLang = tempSLang
+                                                tempPLang = primaryLang
+                                                tempSLang = secondaryLang
+                                                showLanguages = false
+                                                showSecondaryLangOptions = false
+                                                showPrimaryLangOptions = false
+                                                translateName()
+                                                getBOMData()
+                                            }
+                                        } label: {
+                                            Text("CHANGE")
+                                                .font(.custom("Poppins-Regular", size: 12))
+                                                .foregroundStyle(.blue)
                                         }
-                                    } label: {
-                                        Text("CHANGE")
-                                            .font(
-                                                .custom(
-                                                    "Poppins-Regular",
-                                                    size: 12
-                                                )
-                                            )
-                                            .foregroundStyle(.blue)
+                                        .frame(width: 80, height: 30)
                                     }
-                                    .frame(width: 80, height: 30)
-                                    .cornerRadius(5)
-
                                 }
+                                .frame(height: 30)
                             }
                             .padding(.top, 20)
                         }
@@ -577,179 +711,20 @@ struct VersesView: View {
                     width: showLanguages ? 300 : 60,
                     height: showLanguages ? 150 : 48
                 )
-                .background(Color.chapterBorder)
-
-                .cornerRadius(10)
-                .overlay(
+                .background(
                     RoundedRectangle(cornerRadius: 10)
-                        .stroke(.mint, lineWidth: 0.2)
+                        .fill(Color.chapterBorder)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(.mint, lineWidth: 0.2)
+                        )
                 )
                 .offset(
-                    x: showLanguages ? 30 : 150,
-                    y: showLanguages ? -335 : -385
+                    x: showLanguages ? 0 : 150,
+                    y: showLanguages ? -5 : -385
                 )
-                .shadow(color: Color.black.opacity(0.5), radius: 2, x: 3, y: 4)
-            }
-            if showPrimaryLangOptions {
-                VStack {
-                    Text("English")
-                        .font(.custom("Poppins-Regular", size: 20))
-                        .frame(height: 30)
-                        .foregroundStyle(.black)
-                        .onTapGesture {
-                            tempPLang = "English"
-                            showPrimaryLangOptions = false
-                        }
-                    Text("Spanish")
-                        .font(.custom("Poppins-Regular", size: 20))
-                        .frame(height: 30)
-                        .foregroundStyle(.black)
-                        .onTapGesture {
-                            tempPLang = "Spanish"
-                            showPrimaryLangOptions = false
-                        }
-                    Text("Tagalog")
-                        .font(.custom("Poppins-Regular", size: 20))
-                        .frame(height: 30)
-                        .foregroundStyle(.black)
-                        .onTapGesture {
-                            tempPLang = "Tagalog"
-                            showPrimaryLangOptions = false
-                        }
-                    Text("Cebuano")
-                        .font(.custom("Poppins-Regular", size: 20))
-                        .frame(height: 30)
-                        .foregroundStyle(.black)
-                        .onTapGesture {
-                            tempPLang = "Cebuano"
-                            showPrimaryLangOptions = false
-                        }
-                }
-                .frame(width: 100, height: 170)
-                .background(.white)
-                .offset(x: -50, y: -242)
-            }
-            if showSecondaryLangOptions {
-                VStack {
-                    Text("English")
-                        .font(.custom("Poppins-Regular", size: 20))
-                        .frame(height: 30)
-                        .foregroundStyle(.black)
-                        .onTapGesture {
-                            tempSLang = "English"
-                            showSecondaryLangOptions = false
-                        }
-                    Text("Spanish")
-                        .font(.custom("Poppins-Regular", size: 20))
-                        .frame(height: 30)
-                        .foregroundStyle(.black)
-                        .onTapGesture {
-                            tempSLang = "Spanish"
-                            showSecondaryLangOptions = false
-                        }
-                    Text("Tagalog")
-                        .font(.custom("Poppins-Regular", size: 20))
-                        .frame(height: 30)
-                        .foregroundStyle(.black)
-                        .onTapGesture {
-                            tempSLang = "Tagalog"
-                            showSecondaryLangOptions = false
-                        }
-                    Text("Cebuano")
-                        .font(.custom("Poppins-Regular", size: 20))
-                        .frame(height: 30)
-                        .foregroundStyle(.black)
-                        .onTapGesture {
-                            tempSLang = "Cebuano"
-                            showSecondaryLangOptions = false
-                        }
-                }
-                .frame(width: 100, height: 170)
-                .background(.white)
-                .offset(x: 100, y: -242)
-            }
-            if showBooksList {
-                VStack {
-                    HStack {
-                        ScrollViewReader { scrollView in
-                            ScrollView {
-                                ForEach(getBooksList(), id: \.self.name) {
-                                    book in
-                                    Text(book.abbreviation)
-                                        .font(
-                                            .custom("Poppins-Regular", size: 30)
-                                        )
-                                        .foregroundStyle(.black)
-                                        .onTapGesture {
-                                            withAnimation(
-                                                .easeInOut(duration: 0.2)
-                                            ) {
-                                                currentBook = book.name
-                                                totalChapters = 0
-                                                totalChapters =
-                                                    book.chapterCount
-                                                print(totalChapters)
-                                                currentChapter = 1
-                                                
-                                                getBOMData(resetBookIndex: true)
-                                            }
-                                            //showBooksList = false
-                                            // then update the chapters list based on what I just clicked
-                                        }
-                                        .frame(width: 270, height: 40)
-                                        .background(
-                                            book.name == currentBook
-                                                ? .mint.opacity(0.1)
-                                                : .chapterBorder
-                                        )
-                                        .cornerRadius(10)
-                                        .padding(
-                                            book.name == currentBook ? 5 : 0
-                                        )
-                                }
-                            }
-                            .frame(width: 280, height: 450)
-
-                            .onAppear {
-                                scrollView.scrollTo(
-                                    currentBook,
-                                    anchor: .center
-                                )
-                            }
-                        }
-                        Divider()
-                            .frame(width: 2)
-                            .overlay(.black)
-
-                        ScrollView {
-                            ForEach(0..<totalChapters, id: \.self) { chapter in
-                                Text("\(chapter + 1)")
-                                    .font(.custom("Poppins-Regular", size: 30))
-                                    .transition(.move(edge: .bottom))
-                                    .foregroundStyle(.blue.opacity(0.6))
-                                    .onTapGesture {
-                                        withAnimation(.easeInOut(duration: 0.2))
-                                        {
-                                            currentChapter = chapter + 1
-                                            showBooksList = false
-                                            getBOMData(resetBookIndex: true)
-                                        }
-                                    }
-                                    .padding(.trailing, 25)
-                            }
-                        }
-                        .frame(width: showBooksList ? 80 : 0, height: 440)
-                        .transition(.move(edge: .trailing))
-                    }
-                    .frame(height: 450)
-                }
-                .frame(width: 380, height: 460)
-                .background(.chapterBorder)
-                .cornerRadius(10)
-                .shadow(color: Color.black.opacity(0.4), radius: 1, x: 2, y: 3)
-
-                .offset(x: 0, y: 100)
-                .transition(.scale(scale: 0.1))
+                //.shadow(color: Color.black.opacity(0.5), radius: 2, x: 3, y: 4)
+                .zIndex(1)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)  // Make the frame

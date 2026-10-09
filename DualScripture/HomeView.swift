@@ -270,7 +270,6 @@ struct HomeView: View {
         .onAppear() {
             showPrimaryLangOptions = false
             showSecondaryLangOptions = false
-            print("im' here")
         }
     }
 }
