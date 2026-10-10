@@ -5,7 +5,11 @@
 	<key>UIAppFonts</key>
 	<array>
 		<string>PTSansNarrow-Bold.ttf</string>
+		<string>Poppins-Light.ttf</string>
+		<string>Poppins-Thin.ttf</string>
+		<string>Poppins-BoldItalic.ttf</string>
 		<string>PTSansNarrow-Regular.ttf</string>
+		<string>Poppins-Bold.ttf</string>
 		<string>Poppins-Regular.ttf</string>
 		<string>Inder-Regular.ttf</string>
 	</array>

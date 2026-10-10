@@ -14,6 +14,7 @@ struct ConferenceSessionsList: View {
     
     @Binding var primaryLang: String
     @Binding var secondaryLang: String
+    @State var chosenMonth: String = ""
     
     let conferenceName: [String: String] = [
         "English": "General Conference",
@@ -69,7 +70,7 @@ struct ConferenceSessionsList: View {
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 16) {
                         ForEach(0..<sessions.count, id: \.self) { sessionsIndex in
-                                NavigationLink(destination: SessionTalksList(primaryLang: $primaryLang, secondaryLang: $secondaryLang)) {
+                                NavigationLink(destination: SessionTalksList(primaryLang: $primaryLang, secondaryLang: $secondaryLang, chosenMonth: sessions[sessionsIndex])) {
                                     VStack {
                                         VStack{
                                             
