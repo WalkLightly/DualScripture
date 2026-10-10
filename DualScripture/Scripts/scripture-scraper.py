@@ -321,14 +321,14 @@ def scrape_conference_talks():
                     "subject": subject,
                     "paragraphs": paragraphs
                 }
-            session["talks"].append(talk)
-        talk_data["October-2026"].append(session)           
+                session["talks"].append(talk)
+            talk_data["October-2026"].append(session)           
     json_data = json.dumps(talk_data, indent=4)
 
     file_path = "/Users/michaelknight/Documents/talkData/english-oct-2026.json"
 
     with open(file_path, 'w') as file:
         file.write(json_data)
-        
+
 scrape_conference_talks()
 
