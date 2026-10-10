@@ -27,40 +27,55 @@ struct HomeView: View {
                 Color.mainBackground.ignoresSafeArea(.all).opacity(0.6)
                 VStack {
                     HStack {
-                        NavigationLink(destination: BOMBooksListView(primaryLang: $primaryLang, secondaryLang: $secondaryLang)) {
-                            VStack {
+                        VStack {
+                            NavigationLink(destination: BOMBooksListView(primaryLang: $primaryLang, secondaryLang: $secondaryLang)) {
                                 VStack {
-                                    Rectangle()
-                                        .stroke(.gold, lineWidth: 1)
-                                        .frame(width: 150, height: 1)
-                                    Text("THE")
-                                        .font(.custom("Poppins-Regular", size: 30))
-                                        .foregroundStyle(.gold)
-                                        .padding(.top, -8)
-                                    Text("BOOK")
-                                        .font(.custom("Poppins-Regular", size: 30))
-                                        .foregroundStyle(.gold)
-                                        .padding(.top, -40)
-                                    Text("OF")
-                                        .font(.custom("Poppins-Regular", size: 30))
-                                        .foregroundStyle(.gold)
-                                        .padding(.top, -40)
-                                    Text("MORMON")
-                                        .font(.custom("Poppins-Regular", size: 30))
-                                        .foregroundStyle(.gold)
-                                        .padding(.top, -40)
+                                    VStack {
+                                        Rectangle()
+                                            .stroke(.gold, lineWidth: 1)
+                                            .frame(width: 80, height: 1)
+                                        Text("THE")
+                                            .font(.custom("Poppins-Regular", size: 17))
+                                            .foregroundStyle(.gold)
+                                            .padding(.top, -8)
+                                        Text("BOOK")
+                                            .font(.custom("Poppins-Regular", size: 17))
+                                            .foregroundStyle(.gold)
+                                            .padding(.top, -22)
+                                        Text("OF")
+                                            .font(.custom("Poppins-Regular", size: 17))
+                                            .foregroundStyle(.gold)
+                                            .padding(.top, -22)
+                                        Text("MORMON")
+                                            .font(.custom("Poppins-Regular", size: 17))
+                                            .foregroundStyle(.gold)
+                                            .padding(.top, -22)
+                                        
+                                        Rectangle()
+                                            .stroke(.gold, lineWidth: 1)
+                                            .frame(width: 80, height: 1)
+                                            .padding(.top, -10)
+                                    }
+                                    .padding(.top, -55)
                                     
-                                    Rectangle()
-                                        .stroke(.gold, lineWidth: 1)
-                                        .frame(width: 150, height: 1)
-                                        .padding(.top, -10)
                                 }
-                                .padding(.top, -70)
+                                .frame(width: 150, height: 200)
+                                .background(.bomBlue)
+                                .cornerRadius(10)
+                                
                             }
-                            .frame(width: 250, height: 350)
-                            .background(.bomBlue)
+                            Text("Scripture")
+                                .font(.custom("Poppins-Regular", size: 15))
+                        }
+                        VStack {
+                            VStack {
+                            }
+                            .frame(width: 150, height: 200)
+                            .border(.white)
+                            .background(.white)
                             .cornerRadius(10)
-                            
+                            Text("General Conference")
+                                .font(.custom("Poppins-Regular", size: 15))
                         }
 //                        VStack {
 //                            VStack {
