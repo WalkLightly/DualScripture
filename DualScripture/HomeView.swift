@@ -67,15 +67,19 @@ struct HomeView: View {
                             Text("Scripture")
                                 .font(.custom("Poppins-Regular", size: 15))
                         }
-                        VStack {
+                        NavigationLink(destination: ConferenceSessionsList(primaryLang: $primaryLang, secondaryLang: $secondaryLang)) {
+                            
                             VStack {
+                                VStack {
+                                }
+                                .frame(width: 150, height: 200)
+                                .border(.white)
+                                .background(.white)
+                                .cornerRadius(10)
+                                Text("General Conference")
+                                    .font(.custom("Poppins-Regular", size: 15))
+                                    .foregroundStyle(.white)
                             }
-                            .frame(width: 150, height: 200)
-                            .border(.white)
-                            .background(.white)
-                            .cornerRadius(10)
-                            Text("General Conference")
-                                .font(.custom("Poppins-Regular", size: 15))
                         }
 //                        VStack {
 //                            VStack {
