@@ -287,7 +287,11 @@ talks = [
 #     }
 # eng
 def scrape_conference_talks():
-    langCode = "eng"
+    #langCode = "eng"
+    #langCode = "tgl"
+    #langCode = "spa"
+    langCode = "ceb"
+
     for item in talks:
         for session_number, urls in item.items():
             session = {
@@ -325,7 +329,10 @@ def scrape_conference_talks():
             talk_data["October-2026"].append(session)           
     json_data = json.dumps(talk_data, indent=4)
 
-    file_path = "/Users/michaelknight/Documents/talkData/english-oct-2026.json"
+    # file_path = "/Users/michaelknight/Documents/talkData/english-oct-2026.json"
+    # file_path = "/Users/michaelknight/Documents/talkData/tagalog-oct-2026.json"
+    # file_path = "/Users/michaelknight/Documents/talkData/spanish-oct-2026.json"
+    file_path = "/Users/michaelknight/Documents/talkData/cebuano-oct-2026.json"
 
     with open(file_path, 'w') as file:
         file.write(json_data)
