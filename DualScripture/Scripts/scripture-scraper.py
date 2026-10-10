@@ -197,35 +197,21 @@ def flatten_data():
 
 # scrape_data()
 
-flatten_data()
+# flatten_data()
 # URL = f"https://www.churchofjesuschrist.org/study/scriptures/bofm/1-ne/1?lang=tgl"
 # page = requests.get(URL)
 
 # soup = BeautifulSoup(page.content, "html.parser")
 # scriptures = soup.find_all("p", class_="verse")
 
-# for general conference, AT LEAST THIS TIME
-# talk title is the h1 of the <header> component
-# class="author-name
-# class="author-role"
-#
-# class="kicker
-#
-# for the talk content, it's the <p> tags in the class="body-block"
-#
-#
-talk_data = {
-    "October-2026": [
-    {
-        "title": "",
-        "author": "",
-        "calling": "",
-        "paragraphs": [""]
-    }
-                     }
-                     ]
-}
+# eng
+
+
+
+talk_data = { "October-2026": [] }
+
 talks = [
+    {
     "1": [
         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/12gong?lang=",
         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/13runia?lang=",
@@ -235,7 +221,8 @@ talks = [
         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/17soares?lang=",
         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/18douglas?lang=",
         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/19christofferson?lang="
-      ],
+      ]},
+      {
     "2": [
         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/21renlund?lang=",
         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/22farnes?lang=",
@@ -247,8 +234,10 @@ talks = [
         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/28dunn?lang=",
         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/29eyring?lang=",
         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/210rasband?lang="
-      ],
-  "3": [
+      ]
+      },
+  {
+      "3": [
     "https://www.churchofjesuschrist.org/study/general-conference/2026/10/41eyring?lang=",
     "https://www.churchofjesuschrist.org/study/general-conference/2026/10/42chibota?lang=",
     "https://www.churchofjesuschrist.org/study/general-conference/2026/10/43andersen?lang=",
@@ -258,18 +247,88 @@ talks = [
     "https://www.churchofjesuschrist.org/study/general-conference/2026/10/47kyungu?lang=",
     "https://www.churchofjesuschrist.org/study/general-conference/2026/10/48schmeil?lang=",
     "https://www.churchofjesuschrist.org/study/general-conference/2026/10/49oaks?lang="
-        ],
-  "4": [
-    "https://www.churchofjesuschrist.org/study/general-conference/2026/10/51uchtdorf?lang=",
-    "https://www.churchofjesuschrist.org/study/general-conference/2026/10/52munoz-spannaus?lang=",
-    "https://www.churchofjesuschrist.org/study/general-conference/2026/10/53villanueva?lang=",
-    "https://www.churchofjesuschrist.org/study/general-conference/2026/10/54bednar?lang=",
-    "https://www.churchofjesuschrist.org/study/general-conference/2026/10/55lebethoa?lang=",
-    "https://www.churchofjesuschrist.org/study/general-conference/2026/10/56sinclair?lang=",
-    "https://www.churchofjesuschrist.org/study/general-conference/2026/10/57stevenson?lang=",
-    "https://www.churchofjesuschrist.org/study/general-conference/2026/10/58reid?lang=",
-    "https://www.churchofjesuschrist.org/study/general-conference/2026/10/59gilbert?lang=",
-    "https://www.churchofjesuschrist.org/study/general-conference/2026/10/510oaks?lang="
         ]
+  },
+    {
+      "4": [
+        "https://www.churchofjesuschrist.org/study/general-conference/2026/10/51uchtdorf?lang=",
+        "https://www.churchofjesuschrist.org/study/general-conference/2026/10/52munoz-spannaus?lang=",
+        "https://www.churchofjesuschrist.org/study/general-conference/2026/10/53villanueva?lang=",
+        "https://www.churchofjesuschrist.org/study/general-conference/2026/10/54bednar?lang=",
+        "https://www.churchofjesuschrist.org/study/general-conference/2026/10/55lebethoa?lang=",
+        "https://www.churchofjesuschrist.org/study/general-conference/2026/10/56sinclair?lang=",
+        "https://www.churchofjesuschrist.org/study/general-conference/2026/10/57stevenson?lang=",
+        "https://www.churchofjesuschrist.org/study/general-conference/2026/10/58reid?lang=",
+        "https://www.churchofjesuschrist.org/study/general-conference/2026/10/59gilbert?lang=",
+        "https://www.churchofjesuschrist.org/study/general-conference/2026/10/510oaks?lang="
+        ]
+    },
  ]
+# for general conference, AT LEAST THIS TIME
+# talk title is the h1 of the <header> component
+# class="author-name
+# class="author-role"
+#
+# class="kicker
+#
+# for the talk content, it's the <p> tags in the class="body-block"
+#
+#
+# talk_data = {
+#     "October-2026": 
+#         [
+#             {
+#                 "title": "",
+#                 "author": "",
+#                 "calling": "",
+#                 "paragraphs": [""]
+#             }
+#         ]
+#     }
+# eng
+def scrape_conference_talks():
+    langCode = "eng"
+    for item in talks:
+        for session_number, urls in item.items():
+            session = {
+                "number": session_number,
+                "talks": []
+            }
+
+            for url in urls:
+                URL = f"{url}{langCode}"
+                page = requests.get(URL)
+
+                soup = BeautifulSoup(page.content, "html.parser")
+                paragraphs_raw = soup.select("div.body-block p")
+
+                title = soup.select("header h1")[0].get_text()
+                author = soup.select("p.author-name")[0].get_text()
+                calling = soup.select("p.author-role")[0].get_text()
+                subject = soup.select("p.kicker")[0].get_text();
+
+
+                paragraphs = []
+                
+
+                for p in paragraphs_raw:
+                    paragraphs.append(p.get_text())
+
+                talk = {
+                    "title": title,
+                    "author": author,
+                    "calling": calling,
+                    "subject": subject,
+                    "paragraphs": paragraphs
+                }
+            session["talks"].append(talk)
+        talk_data["October-2026"].append(session)           
+    json_data = json.dumps(talk_data, indent=4)
+
+    file_path = "/Users/michaelknight/Documents/talkData/english-oct-2026.json"
+
+    with open(file_path, 'w') as file:
+        file.write(json_data)
+        
+scrape_conference_talks()
 
