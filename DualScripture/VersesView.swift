@@ -564,7 +564,7 @@ struct VersesView: View {
                                                 ForEach(["English", "Spanish", "Tagalog", "Cebuano"], id: \.self) { lang in
                                                     Text(lang)
                                                         .font(.custom("Poppins-Regular", size: 16))
-                                                        .frame(height: 35)
+                                                        .frame(height: 30)
                                                         .frame(maxWidth: .infinity)
                                                         .foregroundStyle(.black)
                                                         .contentShape(Rectangle())
@@ -607,7 +607,7 @@ struct VersesView: View {
                                         if showSecondaryLangOptions {
                                             VStack {
                                                 Text("English")
-                                                    .font(.custom("Poppins-Regular", size: 20))
+                                                    .font(.custom("Poppins-Regular", size: 16))
                                                     .frame(height: 30)
                                                     .foregroundStyle(.black)
                                                     .onTapGesture {
@@ -615,7 +615,7 @@ struct VersesView: View {
                                                         showSecondaryLangOptions = false
                                                     }
                                                 Text("Spanish")
-                                                    .font(.custom("Poppins-Regular", size: 20))
+                                                    .font(.custom("Poppins-Regular", size: 16))
                                                     .frame(height: 30)
                                                     .foregroundStyle(.black)
                                                     .onTapGesture {
@@ -623,7 +623,7 @@ struct VersesView: View {
                                                         showSecondaryLangOptions = false
                                                     }
                                                 Text("Tagalog")
-                                                    .font(.custom("Poppins-Regular", size: 20))
+                                                    .font(.custom("Poppins-Regular", size: 16))
                                                     .frame(height: 30)
                                                     .foregroundStyle(.black)
                                                     .onTapGesture {
@@ -631,7 +631,7 @@ struct VersesView: View {
                                                         showSecondaryLangOptions = false
                                                     }
                                                 Text("Cebuano")
-                                                    .font(.custom("Poppins-Regular", size: 20))
+                                                    .font(.custom("Poppins-Regular", size: 16))
                                                     .frame(height: 30)
                                                     .foregroundStyle(.black)
                                                     .onTapGesture {
@@ -713,7 +713,7 @@ struct VersesView: View {
                 )
                 .background(
                     RoundedRectangle(cornerRadius: 10)
-                        .fill(Color.chapterBorder)
+                        .fill(.black).brightness(0.1)
                         .overlay(
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(.mint, lineWidth: 0.2)

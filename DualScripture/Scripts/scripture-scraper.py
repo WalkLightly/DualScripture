@@ -203,3 +203,14 @@ flatten_data()
 
 # soup = BeautifulSoup(page.content, "html.parser")
 # scriptures = soup.find_all("p", class_="verse")
+
+# for general conference, AT LEAST THIS TIME
+# talk title is the h1 of the <header> component
+# class="author-name
+# class="author-role"
+#
+# class="kicker
+#
+# for the talk content, it's the <p> tags in the class="body-block"
+#
+#
