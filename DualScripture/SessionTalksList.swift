@@ -11,6 +11,7 @@ struct SessionTalksList: View {
     @Binding var primaryLang: String
     @Binding var secondaryLang: String
     typealias ConferenceData = [String: [Session]]
+    @State private var primaryLangData: ConferenceData = [:]
     
     func loadJSONFile(fileName: String) -> Data? {
         guard
@@ -37,12 +38,12 @@ struct SessionTalksList: View {
             let decoder = JSONDecoder()
 
             do {
-                let conferenceData = try decoder.decode(ConferenceData.self, from: jsonData)
+                primaryLangData = try decoder.decode(ConferenceData.self, from: jsonData)
                 // we can use the index we found above to get there quickly
 //                let chapterIndex = currentChapter
 //               
 //                tvd = tglBOM.books[bookIndex].chapters[chapterIndex - 1].verses
-                if let sessions = conferenceData["oct-2026"] {
+                if let sessions = primaryLangData["oct-2026"] {
                     for session in sessions {
                         print("Session Number: \(session.number)")
                         for talk in session.talks {
