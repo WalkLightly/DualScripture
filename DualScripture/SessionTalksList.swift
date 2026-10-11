@@ -27,9 +27,13 @@ struct SessionTalksList: View {
     
     @Binding var primaryLang: String
     @Binding var secondaryLang: String
+    let chosenMonth: String
+
     typealias ConferenceData = [String: [Session]]
     @State private var primaryLangData: [ConferenceTalkListItem] = []
-    let chosenMonth: String
+    @State private var secondaryLangData: [ConferenceTalkListItem] = []
+    
+    
     
     func loadJSONFile(fileName: String) -> Data? {
         guard
@@ -58,10 +62,6 @@ struct SessionTalksList: View {
 
             do {
                 let tempData: ConferenceData = try decoder.decode(ConferenceData.self, from: jsonData)
-                // we can use the index we found above to get there quickly
-//                let chapterIndex = currentChapter
-//               
-//                tvd = tglBOM.books[bookIndex].chapters[chapterIndex - 1].verses
                 if let sessions = tempData["oct-2026"] {
                     for session in sessions {
                         primaryLangData.append(ConferenceTalkListItem(itemType: "Header", title: sessionNameMap[session.number] ?? "", author: "", calling: "", subject: "", paragraphs: []))
@@ -72,6 +72,29 @@ struct SessionTalksList: View {
                 }
                 
                 print(primaryLangData)
+
+            } catch {
+                print("Error decoding JSON: \(error)")
+            }
+        }
+        
+        // secondary language
+        if let jsonData = loadJSONFile(fileName: "english-oct-2026") {
+            let decoder = JSONDecoder()
+
+            do {
+                let tempData: ConferenceData = try decoder.decode(ConferenceData.self, from: jsonData)
+                if let sessions = tempData["oct-2026"] {
+                    for session in sessions {
+                        secondaryLangData.append(ConferenceTalkListItem(itemType: "Header", title: sessionNameMap[session.number] ?? "", author: "", calling: "", subject: "", paragraphs: []))
+                        for talk in session.talks {
+                            secondaryLangData.append(ConferenceTalkListItem(itemType: "Talk", title: talk.title, author: talk.author, calling: talk.calling, subject: talk.subject, paragraphs: talk.paragraphs))
+                        }
+                    }
+                }
+                
+               // print(primaryLangData)
+               // print(secondaryLangData)
 
             } catch {
                 print("Error decoding JSON: \(error)")
@@ -135,8 +158,9 @@ struct SessionTalksList: View {
                                 RoundedRectangle(cornerRadius: 10)
                                     .stroke(.mint, lineWidth: 2)
                             }
+                            .padding(.top, -7)
                         } else {
-                            NavigationLink(destination: ConferenceTalkView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, conferenceTalk: talkListItem)) {
+                            NavigationLink(destination: ConferenceTalkView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, pConferenceTalk: talkListItem, sConferenceTalk: secondaryLangData[index])) {
                                 
                                 HStack {
                                     Text(talkListItem.title)
@@ -158,11 +182,16 @@ struct SessionTalksList: View {
                             }
                             .padding(.leading, 15)
                         }
+//                        Divider()
+//                            .background(.mint)
+                            
                     }
-                    //.listRowSeparator(.hidden)                  // 1. Hide line separators between rows
+                    .listRowSeparator(talkListItem.itemType == "Header" ? .hidden : .visible)                  // 1. Hide line separators between rows
                     .listRowBackground(Color.clear)            // 2. Remove default row background
-                    .listRowInsets(EdgeInsets(top: 8, leading: talkListItem.itemType == "Header" ? 0 : 20, bottom: 8, trailing: 0)) // 3. Custom padding/margins
+                    .listRowInsets(EdgeInsets(top: 8, leading: talkListItem.itemType == "Header" ? 10 : 20, bottom: 8, trailing: 10)) // 3. Custom padding/margins
                     .alignmentGuide(.listRowSeparatorLeading) { _ in 0 }
+                   
+                    
                 }
                 .listStyle(.plain)                                 // 4. Removes grouped/inset style margins
                 .scrollContentBackground(.hidden)

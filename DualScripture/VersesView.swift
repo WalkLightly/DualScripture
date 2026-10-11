@@ -511,7 +511,7 @@ struct VersesView: View {
                 }
                 .toolbar {
                     if !showLanguages {
-                        ToolbarItem(placement: .navigationBarTrailing) {  // or .navigationBarLeading
+                        ToolbarItem(placement: .topBarTrailing) {  // or .navigationBarLeading
                             Button {
                                 withAnimation(.easeInOut(duration: 0.3)) {
                                     showLanguages = true
