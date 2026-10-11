@@ -52,17 +52,18 @@ struct SessionTalksList: View {
         }
     }
     
-    func getConferenceTalksList() -> [String] {
+    func getConferenceTalksList() -> Void {
         let talks: [String] = []
         primaryLangData = []
+        secondaryLangData = []
         
         // primary language
-        if let jsonData = loadJSONFile(fileName: "tagalog-oct-2026") {
+        if let jsonData = loadJSONFile(fileName: "\(primaryLang.lowercased())-\(chosenMonth.lowercased())") {
             let decoder = JSONDecoder()
 
             do {
                 let tempData: ConferenceData = try decoder.decode(ConferenceData.self, from: jsonData)
-                if let sessions = tempData["oct-2026"] {
+                if let sessions = tempData[chosenMonth.lowercased()] {
                     for session in sessions {
                         primaryLangData.append(ConferenceTalkListItem(itemType: "Header", title: sessionNameMap[session.number] ?? "", author: "", calling: "", subject: "", paragraphs: []))
                         for talk in session.talks {
@@ -70,21 +71,18 @@ struct SessionTalksList: View {
                         }
                     }
                 }
-                
-                print(primaryLangData)
-
             } catch {
                 print("Error decoding JSON: \(error)")
             }
         }
         
         // secondary language
-        if let jsonData = loadJSONFile(fileName: "english-oct-2026") {
+        if let jsonData = loadJSONFile(fileName: "\(secondaryLang.lowercased())-\(chosenMonth.lowercased())") {
             let decoder = JSONDecoder()
 
             do {
                 let tempData: ConferenceData = try decoder.decode(ConferenceData.self, from: jsonData)
-                if let sessions = tempData["oct-2026"] {
+                if let sessions = tempData[chosenMonth.lowercased()] {
                     for session in sessions {
                         secondaryLangData.append(ConferenceTalkListItem(itemType: "Header", title: sessionNameMap[session.number] ?? "", author: "", calling: "", subject: "", paragraphs: []))
                         for talk in session.talks {
@@ -95,12 +93,12 @@ struct SessionTalksList: View {
                 
                // print(primaryLangData)
                // print(secondaryLangData)
+                print("here again")
 
             } catch {
                 print("Error decoding JSON: \(error)")
             }
         }
-        return talks
     }
     var body: some View {
         VStack {
@@ -160,7 +158,7 @@ struct SessionTalksList: View {
                             }
                             .padding(.top, -7)
                         } else {
-                            NavigationLink(destination: ConferenceTalkView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, pConferenceTalk: talkListItem, sConferenceTalk: secondaryLangData[index])) {
+                            NavigationLink(destination: ConferenceTalkView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, pConferenceTalk: $primaryLangData[index], sConferenceTalk: $secondaryLangData[index], getConferenceTalksList: getConferenceTalksList)) {
                                 
                                 HStack {
                                     Text(talkListItem.title)
@@ -195,70 +193,12 @@ struct SessionTalksList: View {
                 }
                 .listStyle(.plain)                                 // 4. Removes grouped/inset style margins
                 .scrollContentBackground(.hidden)
-            }.onAppear {
+            }
+            .onAppear {
                 getConferenceTalksList()
             }
         }
     }
-//        VStack {
-//            List {
-//                ForEach (getBooksList(), id: \.self.name) { book in
-//                    
-//                    if book.chapterCount > 1 {
-//                        NavigationLink(destination: BOMChaptersListView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, chaptersCount: book.chapterCount, bomBook: book.name)) {
-//                            HStack {
-//                                VStack() {
-//                                    Spacer()
-//                                    Text(book.name)
-//                                        .font(.custom("Inder-Regular", size: 20))
-//                                        .foregroundStyle(.white)
-//                                        .padding(.top, -16)
-//                                }
-//                                Spacer()
-//                                if book.chapterCount > 1 {
-//                                    Button {
-//                                    } label: {
-//                                        Image(systemName: "chevron.right")
-//                                            .foregroundStyle(.gray)
-//                                    }
-//                                }
-//                            }
-//                            
-//                        }
-//                        .listRowBackground(Color.black)
-//                        .navigationLinkIndicatorVisibility(.hidden)
-//                    } else {
-//                        NavigationLink(destination: BOMChaptersListView(primaryLang: $primaryLang, secondaryLang: $secondaryLang, chaptersCount: book.chapterCount, bomBook: book.name)) {
-//                            HStack {
-//                                VStack() {
-//                                    Spacer()
-//                                    Text(book.name)
-//                                        .font(.custom("Inder-Regular", size: 20))
-//                                        .foregroundStyle(.white)
-//                                        .padding(.top, -16)
-//                                }
-//                                Spacer()
-//                                if book.chapterCount > 1 {
-//                                    Button {
-//                                        // take to the chapter
-//                                    } label: {
-//                                        Image(systemName: "chevron.right")
-//                                            .foregroundStyle(.gray)
-//                                    }
-//                                }
-//                            }
-//                            
-//                        }
-//                        .listRowBackground(Color.black)
-//                        .navigationLinkIndicatorVisibility(.hidden)
-//                    }
-//
-//                }
-//            }
-//            .scrollContentBackground(.hidden)
-//            .background(.black)
-//        }
-//    }
 }
 
 #Preview {

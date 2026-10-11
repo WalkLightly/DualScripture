@@ -523,7 +523,7 @@ struct VersesView: View {
                     }
                 }
             if showLanguages {
-            VStack {
+                VStack {
                     // ... (Empty placeholder if needed)
                 }
                 .frame(
@@ -533,7 +533,7 @@ struct VersesView: View {
                 .background(.mint)
                 .cornerRadius(12)
                 .offset(x: showLanguages ? 0 : 0, y: showLanguages ? 0 : 0)
-
+                
                 VStack {
                     if showLanguages {
                         VStack {
@@ -543,7 +543,7 @@ struct VersesView: View {
                                     Text("Primary Language")
                                         .font(.custom("Poppins-Regular", size: 13))
                                         .foregroundStyle(.white)
-
+                                    
                                     Button {
                                         showPrimaryLangOptions.toggle()
                                     } label: {
@@ -583,13 +583,13 @@ struct VersesView: View {
                                         }
                                     }
                                 }
-
+                                
                                 // MARK: Secondary Language
                                 VStack {
                                     Text("Secondary Language")
                                         .font(.custom("Poppins-Regular", size: 13))
                                         .foregroundStyle(.white)
-
+                                    
                                     Button {
                                         showSecondaryLangOptions.toggle()
                                     } label: {
@@ -649,7 +649,7 @@ struct VersesView: View {
                                     }
                                 }
                             }
-
+                            
                             // MARK: Action Buttons
                             HStack {
                                 Spacer()
