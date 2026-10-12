@@ -181,7 +181,7 @@ struct ConferenceTalkView: View {
                                         ? p.targetLangVerse
                                         : p.knownLangVerse
                                     )
-                                    .font(.custom("Inder-Regular", size: 18))
+                                    .font(.custom("Poppins-Regular", size: 18))
                                     .foregroundStyle(.gray)
                                     .onTapGesture {
                                         withAnimation(

@@ -233,7 +233,7 @@ struct VersesView: View {
                                 VStack {
                                     Text("\(verse.verse)")
                                         .font(
-                                            .custom("Inder-Regular", size: 18)
+                                            .custom("Poppins-Bold", size: 18)
                                         )
                                         .frame(alignment: .bottomLeading)
                                         .foregroundStyle(.blue)
@@ -250,7 +250,7 @@ struct VersesView: View {
                                         ? verse.targetLangVerse
                                         : verse.knownLangVerse
                                 )
-                                .font(.custom("Inder-Regular", size: 18))
+                                .font(.custom("Poppins-Regular", size: 18))
                                 .foregroundStyle(.gray)
                                 .onTapGesture {
                                     if !showBooksList && !showLanguages {

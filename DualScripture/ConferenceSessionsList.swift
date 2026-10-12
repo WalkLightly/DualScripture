@@ -12,6 +12,13 @@ struct ConferenceSessionsList: View {
         "Oct-2026",
     ]
     
+    let sessionsImgMap: [String: String] = [
+        "Oct-2026": "GenConIcon",
+        "Apr-2026": "Apr2026",
+        "Oct-2025": "Oct2025",
+        "Apr-2025": "Apr2025"
+    ]
+    
     @Binding var primaryLang: String
     @Binding var secondaryLang: String
     @State var chosenMonth: String = ""
@@ -76,11 +83,17 @@ struct ConferenceSessionsList: View {
                                             
                                         }
                                         .frame(width: 100, height: 120)
-                                        .background(.chapterButtons)
+                                        .background {
+                                            Image(sessionsImgMap[sessions[sessionsIndex]] ?? "GenConIcon")
+                                                .resizable()
+                                                .scaledToFill()
+                                                .ignoresSafeArea()
+                                        }
                                         .overlay(
                                             RoundedRectangle(cornerRadius: 5)
                                                 .stroke(Color.chapterBorder, lineWidth: 1)  // 2. Apply border to same shape
                                         )
+                                        .cornerRadius(10)
                                         Text(sessions[sessionsIndex])
                                             .font(.custom("Poppins-Regular", size: 15))
                                             .foregroundStyle(.white)

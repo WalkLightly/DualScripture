@@ -14,6 +14,9 @@ internal import Combine
 
 struct HomeView: View {
     var languages: [String] = ["Tagalog", "English", "Spanish", "Cebuano"]
+    @AppStorage("savedPrimaryLang") private var savedPrimaryLang: String = "Tagalog"
+    @AppStorage("savedSecondaryLang") private var savedSecondaryLang: String = "Tagalog"
+
     @State var primaryLang: String = "Tagalog"
     @State var secondaryLang: String = "English"
 
@@ -72,9 +75,13 @@ struct HomeView: View {
                             VStack {
                                 VStack {
                                 }
-                                .frame(width: 150, height: 200)
-                                .border(.white)
-                                .background(.white)
+                                .frame(width: 140, height: 200)
+                                .background(
+                                    Image("GenConIcon")
+                                        .resizable()
+                                        .scaledToFill()
+                                        .ignoresSafeArea()
+                                )
                                 .cornerRadius(10)
                                 Text("General Conference")
                                     .font(.custom("Poppins-Regular", size: 15))
@@ -183,6 +190,7 @@ struct HomeView: View {
                                                 .onTapGesture {
                                                     primaryLang = "English"
                                                     showPrimaryLangOptions = false
+                                                    savedPrimaryLang = "English"
                                                 }
                                             Text("Spanish")
                                                 .font(.custom("Poppins-Regular", size: 20))
@@ -191,6 +199,7 @@ struct HomeView: View {
                                                 .onTapGesture {
                                                     primaryLang = "Spanish"
                                                     showPrimaryLangOptions = false
+                                                    savedPrimaryLang = "Spanish"
                                                 }
                                             Text("Tagalog")
                                                 .font(.custom("Poppins-Regular", size: 20))
@@ -199,6 +208,7 @@ struct HomeView: View {
                                                 .onTapGesture {
                                                     primaryLang = "Tagalog"
                                                     showPrimaryLangOptions = false
+                                                    savedPrimaryLang = "Tagalog"
                                                 }
                                             Text("Cebuano")
                                                 .font(.custom("Poppins-Regular", size: 20))
@@ -207,6 +217,7 @@ struct HomeView: View {
                                                 .onTapGesture {
                                                     primaryLang = "Cebuano"
                                                     showPrimaryLangOptions = false
+                                                    savedPrimaryLang = "Cebuano"
                                                 }
                                         }
                                         .frame(width: 100, height: 150)
@@ -245,6 +256,7 @@ struct HomeView: View {
                                                 .onTapGesture {
                                                     secondaryLang = "English"
                                                     showSecondaryLangOptions = false
+                                                    savedSecondaryLang = "English"
                                                 }
                                             Text("Spanish")
                                                 .font(.custom("Poppins-Regular", size: 20))
@@ -253,6 +265,7 @@ struct HomeView: View {
                                                 .onTapGesture {
                                                     secondaryLang = "Spanish"
                                                     showSecondaryLangOptions = false
+                                                    savedSecondaryLang = "Spanish"
                                                 }
                                             Text("Tagalog")
                                                 .font(.custom("Poppins-Regular", size: 20))
@@ -261,6 +274,7 @@ struct HomeView: View {
                                                 .onTapGesture {
                                                     secondaryLang = "Tagalog"
                                                     showSecondaryLangOptions = false
+                                                    savedSecondaryLang = "Tagalog"
                                                 }
                                             Text("Cebuano")
                                                 .font(.custom("Poppins-Regular", size: 20))
@@ -269,6 +283,7 @@ struct HomeView: View {
                                                 .onTapGesture {
                                                     secondaryLang = "Cebuano"
                                                     showSecondaryLangOptions = false
+                                                    savedSecondaryLang = "Cebuano"
                                                 }
                                         }
                                         .frame(width: 110, height: 150)
@@ -301,6 +316,8 @@ struct HomeView: View {
         .onAppear() {
             showPrimaryLangOptions = false
             showSecondaryLangOptions = false
+            primaryLang = savedPrimaryLang
+            secondaryLang = savedSecondaryLang
         }
     }
 }
