@@ -75,7 +75,11 @@ struct ConferenceTalkView: View {
                                 .font(.custom("Poppins-Regular", size: 35))
                                 .padding(.leading, dualLanguageTalkMetaData.showTargetLangTitle ? 50 : 0)
                                 .onTapGesture {
-                                    dualLanguageTalkMetaData.showTargetLangTitle.toggle()
+                                    withAnimation(
+                                        .spring(.bouncy(duration: 0.3))
+                                    ) {
+                                        dualLanguageTalkMetaData.showTargetLangTitle.toggle()
+                                    }
                                 }
                         }
                         Spacer()
@@ -98,7 +102,11 @@ struct ConferenceTalkView: View {
                                 .padding(.top, 20)
                                 .padding(.leading, dualLanguageTalkMetaData.showTargetLangAuthor ? 50 : 0)
                                 .onTapGesture {
-                                    dualLanguageTalkMetaData.showTargetLangAuthor.toggle()
+                                    withAnimation(
+                                        .spring(.bouncy(duration: 0.3))
+                                    ) {
+                                        dualLanguageTalkMetaData.showTargetLangAuthor.toggle()
+                                    }
                                 }
                         }
                         Spacer()
@@ -120,7 +128,11 @@ struct ConferenceTalkView: View {
                                 .font(.custom("Poppins-BoldItalic", size: 15))
                                 .padding(.leading, dualLanguageTalkMetaData.showTargetLangCalling ? 50 : 0)
                                 .onTapGesture {
-                                    dualLanguageTalkMetaData.showTargetLangCalling.toggle()
+                                    withAnimation(
+                                        .spring(.bouncy(duration: 0.3))
+                                    ) {
+                                        dualLanguageTalkMetaData.showTargetLangCalling.toggle()
+                                    }
                                 }
                         }
                         Spacer()
@@ -144,7 +156,11 @@ struct ConferenceTalkView: View {
                                         .padding(.top, 30)
                                         .padding(.leading, dualLanguageTalkMetaData.showTargetLangSubject ? 50 : 0)
                                         .onTapGesture {
-                                            dualLanguageTalkMetaData.showTargetLangSubject.toggle()
+                                            withAnimation(
+                                                .spring(.bouncy(duration: 0.3))
+                                            ) {
+                                                dualLanguageTalkMetaData.showTargetLangSubject.toggle()
+                                            }
                                         }
                                     Spacer()
                                 }

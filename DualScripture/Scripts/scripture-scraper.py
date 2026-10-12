@@ -210,60 +210,114 @@ def flatten_data():
 
 talk_data = { "October-2026": [] }
 
-# talks-oct-2026 = [
-#     {
-#     "1": [
-#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/12gong?lang=",
-#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/13runia?lang=",
-#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/14causse?lang=",
-#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/15sikahema?lang=",
-#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/16hathaway?lang=",
-#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/17soares?lang=",
-#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/18douglas?lang=",
-#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/19christofferson?lang="
-#       ]},
-#       {
-#     "2": [
-#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/21renlund?lang=",
-#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/22farnes?lang=",
-#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/23chigbundu?lang=",
-#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/24giuffra?lang=",
-#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/25morgan?lang=",
-#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/26fale?lang=",
-#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/27kearon?lang=",
-#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/28dunn?lang=",
-#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/29eyring?lang=",
-#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/210rasband?lang="
-#       ]
-#       },
-#   {
-#       "3": [
-#     "https://www.churchofjesuschrist.org/study/general-conference/2026/10/41eyring?lang=",
-#     "https://www.churchofjesuschrist.org/study/general-conference/2026/10/42chibota?lang=",
-#     "https://www.churchofjesuschrist.org/study/general-conference/2026/10/43andersen?lang=",
-#     "https://www.churchofjesuschrist.org/study/general-conference/2026/10/44fantone?lang=",
-#     "https://www.churchofjesuschrist.org/study/general-conference/2026/10/45dube?lang=",
-#     "https://www.churchofjesuschrist.org/study/general-conference/2026/10/46cook?lang=",
-#     "https://www.churchofjesuschrist.org/study/general-conference/2026/10/47kyungu?lang=",
-#     "https://www.churchofjesuschrist.org/study/general-conference/2026/10/48schmeil?lang=",
-#     "https://www.churchofjesuschrist.org/study/general-conference/2026/10/49oaks?lang="
-#         ]
-#   },
-#     {
-#       "4": [
-#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/51uchtdorf?lang=",
-#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/52munoz-spannaus?lang=",
-#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/53villanueva?lang=",
-#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/54bednar?lang=",
-#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/55lebethoa?lang=",
-#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/56sinclair?lang=",
-#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/57stevenson?lang=",
-#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/58reid?lang=",
-#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/59gilbert?lang=",
-#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/510oaks?lang="
-#         ]
-#     },
-#  ]
+ talks-apr-2026 = [
+     {
+     "1": [
+            https://www.churchofjesuschrist.org/study/general-conference/2026/04/11oaks?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2026/04/12christofferson?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2026/04/13kearon?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2026/04/14yee?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2026/04/15gilbert?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2026/04/16bednar?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2026/04/17teh?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2026/04/18becerra?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2026/04/19eyring?lang=eng
+       ]},
+       {
+     "2": [
+            https://www.churchofjesuschrist.org/study/general-conference/2026/04/23stevenson?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2026/04/24ortega?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2026/04/25wu?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2026/04/26wunderli?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2026/04/27causse?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2026/04/28holmes?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2026/04/29matswagothata?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2026/04/210soares?lang=eng
+       ]
+       },
+   {
+       "3": [
+            https://www.churchofjesuschrist.org/study/general-conference/2026/04/41uchtdorf?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2026/04/42freeman?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2026/04/43larreal?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2026/04/44rowe?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2026/04/45rasband?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2026/04/46renlund?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2026/04/47mutombo?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2026/04/48walker?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2026/04/49oaks?lang=eng
+         ]
+   },
+     {
+       "4": [
+            https://www.churchofjesuschrist.org/study/general-conference/2026/04/51christofferson?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2026/04/52wong?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2026/04/53hall?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2026/04/54porter?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2026/04/55andersen?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2026/04/56cook?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2026/04/57wakolo?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2026/04/58gong?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2026/04/59oaks?lang=eng
+         ]
+     },
+  ]
+  
+   talks-oct-2025 = [
+     {
+     "1": [
+            https://www.churchofjesuschrist.org/study/general-conference/2025/10/19oaks?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2025/10/12stevenson?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2025/10/13browning?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2025/10/14barcellos?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2025/10/15eyre?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2025/10/17johnson?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2025/10/16uchtdorf?lang=eng,
+       ]},
+       {
+     "2": [
+            https://www.churchofjesuschrist.org/study/general-conference/2025/10/21rasband?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2025/10/22webb?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2025/10/23jaggi?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2025/10/24brown?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2025/10/25gong?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2025/10/26cziesla?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2025/10/27cook?lang=eng
+       ]
+       },
+          {
+       "2.5": [
+            https://www.churchofjesuschrist.org/study/general-conference/2025/10/31kearon?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2025/10/32dennis?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2025/10/33barlow?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2025/10/34jackson?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2025/10/35andersen?lang=eng
+         ]
+   },
+   {
+       "3": [
+            https://www.churchofjesuschrist.org/study/general-conference/2025/10/41holland?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2025/10/42evanson?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2025/10/43soares?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2025/10/44johnson?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2025/10/45christofferson?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2025/10/46spannaus?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2025/10/47eyring?lang=eng
+         ]
+   },
+     {
+       "4": [
+            https://www.churchofjesuschrist.org/study/general-conference/2025/10/51bednar?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2025/10/52cuvelier?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2025/10/53holland?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2025/10/54godoy?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2025/10/55renlund?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2025/10/56amos?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2025/10/57farias?lang=eng,
+            https://www.churchofjesuschrist.org/study/general-conference/2025/10/58oaks?lang=eng
+         ]
+     },
+  ]
 # for general conference, AT LEAST THIS TIME
 # talk title is the h1 of the <header> component
 # class="author-name
