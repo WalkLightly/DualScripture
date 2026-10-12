@@ -85,14 +85,12 @@ struct ConferenceTalkView: View {
                     HStack {
                         HStack {
                             if !dualLanguageTalkMetaData.showTargetLangAuthor {
-                                VStack {
-                                    Spacer()
-                                    Divider()
-                                        .frame(width: 5, height: 20)
-                                        .overlay(.mint)
-                                        .cornerRadius(5)
-                                        .padding(.leading, 50)
-                                }
+                                Divider()
+                                    .frame(width: 5)
+                                    .overlay(.mint)
+                                    .cornerRadius(5)
+                                    .padding(.leading, 50)
+                                    .padding(.top, 20)
                             }
                             Text(dualLanguageTalkMetaData.showTargetLangAuthor ? dualLanguageTalkMetaData.pAuthor : dualLanguageTalkMetaData.sAuthor)
                                 .foregroundStyle(Color.gray)
@@ -109,14 +107,13 @@ struct ConferenceTalkView: View {
                     HStack {
                         HStack {
                             if !dualLanguageTalkMetaData.showTargetLangCalling {
-                                VStack {
-                                    Spacer()
-                                    Divider()
-                                        .frame(width: 5, height: 50)
-                                        .overlay(.mint)
-                                        .cornerRadius(5)
-                                        .padding(.leading, 50)
-                                }
+                                
+                                Divider()
+                                    .frame(width: 5)
+                                    .overlay(.mint)
+                                    .cornerRadius(5)
+                                    .padding(.leading, 50)
+                                
                             }
                             Text(dualLanguageTalkMetaData.showTargetLangCalling ? dualLanguageTalkMetaData.pCalling : dualLanguageTalkMetaData.sCalling)
                                 .foregroundStyle(Color.gray)
@@ -130,24 +127,29 @@ struct ConferenceTalkView: View {
                     }
                     
                     HStack {
-                        HStack {
-                            if !dualLanguageTalkMetaData.showTargetLangSubject {
-                                VStack {
-                                    Spacer()
+                        VStack {
+                            HStack {
+                                if !dualLanguageTalkMetaData.showTargetLangSubject {
                                     Divider()
-                                        .frame(width: 5, height: 70)
+                                        .frame(width: 5)
                                         .overlay(.mint)
                                         .cornerRadius(5)
                                         .padding(.leading, 50)
+                                        .padding(.top, 30)
+                                    
+                                }
+                                VStack {
+                                    Text(dualLanguageTalkMetaData.showTargetLangSubject ? dualLanguageTalkMetaData.pSubject : dualLanguageTalkMetaData.sSubject)                                .foregroundStyle(Color.gray)
+                                        .font(.custom("Poppins-Light", size: 15))
+                                        .padding(.top, 30)
+                                        .padding(.leading, dualLanguageTalkMetaData.showTargetLangSubject ? 50 : 0)
+                                        .onTapGesture {
+                                            dualLanguageTalkMetaData.showTargetLangSubject.toggle()
+                                        }
+                                    Spacer()
                                 }
                             }
-                            Text(dualLanguageTalkMetaData.showTargetLangSubject ? dualLanguageTalkMetaData.pSubject : dualLanguageTalkMetaData.sSubject)                                .foregroundStyle(Color.gray)
-                                .font(.custom("Poppins-Light", size: 15))
-                                .padding(.top, 30)
-                                .padding(.leading, dualLanguageTalkMetaData.showTargetLangSubject ? 50 : 0)
-                                .onTapGesture {
-                                    dualLanguageTalkMetaData.showTargetLangSubject.toggle()
-                                }
+                            Spacer()
                         }
                         Spacer()
                     }
@@ -428,7 +430,7 @@ struct ConferenceTalkView: View {
 
 #Preview {
     ConferenceTalkView(primaryLang: .constant("Tagalog"), secondaryLang: .constant("English"),
-                       pConferenceTalk: .constant(ConferenceTalkListItem(itemType: "Talk", title: "Pangwakas na Mensahe", author: "Ni Pangulong Dallin H. Oaks", calling: "Pangulo ng Ang Simbahan ni Jesucristo ng mga Banal sa mga Huling Araw", subject: "Habang inaabangan natin ang hinaharap, wini-welcome natin ang mundo, nang personal o virtual, sa Pagdiriwang sa Salt Lake Temple.", paragraphs: [
+                       pConferenceTalk: .constant(ConferenceTalkListItem(itemType: "Talk", title: "Pangwakas na Mensahe", author: "Ni Pangulong Dallin H. Oaks", calling: "Pangulo ng Ang Simbahan ni Jesucristo ng mga Banal sa mga Huling Araw", subject: "Ang pagtanggap ng mga ordenansa ng priesthood at pagpasok sa mga sagradong tipan ay mahahalagang hakbang sa 'panghabambuhay na mithiin' upang iayon ang ating mga puso, isipan, at buhay sa kalooban ng Diyos.", paragraphs: [
                         "Aking minahamahal na mga kapatid, ang dakilang mga mensahe sa kumperensiyang ito at ang Espiritu ng Panginoon ay nagbigay-inspirasyon sa ating lahat na ituon ang ating pagsamba, ipokus ang ating pag-aaral, at pag-isahin ang ating mga patotoo sa mga turo ng Panginoong Jesucristo at sa plano ng Kanyang Ama para sa ating walang-hanggang pag-unlad at kagalakan.",
                         "Kapag nailathala na ang mga mensahe sa kumperensiyang ito, inaanyayahan namin ang lahat na pag-aralan at pagnilayan ang mga ito nang may panalangin at kumilos nang may pananampalataya ayon sa mga alituntuning ipinapaliwanag ng mga ito. Nangako ang Panginoon, 'Siya na tumatanggap ay bibigyan ko pa ng karagdagan.'",
                         "Habang inaabangan natin ang hinaharap, wini-welcome natin ang mundo, nang personal o virtual, sa Pagdiriwang sa Salt Lake Temple. Sa Abril-05, 2027, bubuksan sa publiko ang mga pinto ng templo, ang unang ganitong pagbubukas simula noong 1893, 134 na taon ang nakararaan.",
