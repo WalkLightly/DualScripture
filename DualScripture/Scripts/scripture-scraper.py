@@ -210,6 +210,82 @@ def flatten_data():
 
 talk_data = { "October-2026": [] }
 
+# talks-oct-2026 = [
+#     {
+#     "1": [
+#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/12gong?lang=",
+#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/13runia?lang=",
+#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/14causse?lang=",
+#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/15sikahema?lang=",
+#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/16hathaway?lang=",
+#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/17soares?lang=",
+#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/18douglas?lang=",
+#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/19christofferson?lang="
+#       ]},
+#       {
+#     "2": [
+#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/21renlund?lang=",
+#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/22farnes?lang=",
+#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/23chigbundu?lang=",
+#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/24giuffra?lang=",
+#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/25morgan?lang=",
+#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/26fale?lang=",
+#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/27kearon?lang=",
+#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/28dunn?lang=",
+#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/29eyring?lang=",
+#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/210rasband?lang="
+#       ]
+#       },
+#   {
+#       "3": [
+#     "https://www.churchofjesuschrist.org/study/general-conference/2026/10/41eyring?lang=",
+#     "https://www.churchofjesuschrist.org/study/general-conference/2026/10/42chibota?lang=",
+#     "https://www.churchofjesuschrist.org/study/general-conference/2026/10/43andersen?lang=",
+#     "https://www.churchofjesuschrist.org/study/general-conference/2026/10/44fantone?lang=",
+#     "https://www.churchofjesuschrist.org/study/general-conference/2026/10/45dube?lang=",
+#     "https://www.churchofjesuschrist.org/study/general-conference/2026/10/46cook?lang=",
+#     "https://www.churchofjesuschrist.org/study/general-conference/2026/10/47kyungu?lang=",
+#     "https://www.churchofjesuschrist.org/study/general-conference/2026/10/48schmeil?lang=",
+#     "https://www.churchofjesuschrist.org/study/general-conference/2026/10/49oaks?lang="
+#         ]
+#   },
+#     {
+#       "4": [
+#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/51uchtdorf?lang=",
+#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/52munoz-spannaus?lang=",
+#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/53villanueva?lang=",
+#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/54bednar?lang=",
+#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/55lebethoa?lang=",
+#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/56sinclair?lang=",
+#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/57stevenson?lang=",
+#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/58reid?lang=",
+#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/59gilbert?lang=",
+#         "https://www.churchofjesuschrist.org/study/general-conference/2026/10/510oaks?lang="
+#         ]
+#     },
+#  ]
+# for general conference, AT LEAST THIS TIME
+# talk title is the h1 of the <header> component
+# class="author-name
+# class="author-role"
+#
+# class="kicker
+#
+# for the talk content, it's the <p> tags in the class="body-block"
+#
+#
+# talk_data = {
+#     "October-2026": 
+#         [
+#             {
+#                 "title": "",
+#                 "author": "",
+#                 "calling": "",
+#                 "paragraphs": [""]
+#             }
+#         ]
+#     }
+# eng
 talks = [
     {
     "1": [
@@ -264,28 +340,6 @@ talks = [
         ]
     },
  ]
-# for general conference, AT LEAST THIS TIME
-# talk title is the h1 of the <header> component
-# class="author-name
-# class="author-role"
-#
-# class="kicker
-#
-# for the talk content, it's the <p> tags in the class="body-block"
-#
-#
-# talk_data = {
-#     "October-2026": 
-#         [
-#             {
-#                 "title": "",
-#                 "author": "",
-#                 "calling": "",
-#                 "paragraphs": [""]
-#             }
-#         ]
-#     }
-# eng
 def scrape_conference_talks():
     #langCode = "eng"
     #langCode = "tgl"
