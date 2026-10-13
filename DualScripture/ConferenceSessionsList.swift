@@ -10,6 +10,7 @@ import SwiftUI
 struct ConferenceSessionsList: View {
     let sessions: [String] = [
         "Oct-2026",
+        "Apr-2026"
     ]
     
     let sessionsImgMap: [String: String] = [
