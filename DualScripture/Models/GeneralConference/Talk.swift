@@ -7,7 +7,7 @@ struct Talk: Codable, Identifiable {
     let author: String
     let calling: String
     let subject: String
-    let paragraphs: [String]
+    let paragraphs: [[String]]
     
 //    // Exclude 'id' from JSON decoding since it's generated locally
     enum CodingKeys: String, CodingKey {

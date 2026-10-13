@@ -22,6 +22,34 @@ struct ConferenceTalkView: View {
     @State var showPrimaryLangOptions: Bool = false
     @State private var tempPLang: String = ""
     @State private var tempSLang: String = ""
+    @State private var pNum: Int = 0
+    
+//    func getPrimaryText(verse: String) -> String {
+//        let components = verse.components(separatedBy: "THIS_IS_HEADING")
+//
+//        if components.indices.contains(1) {
+//            return String(components[1])
+//        } else {
+//            return verse
+//        }
+//    }
+//    
+//    func getSecondaryText(verse: String) -> String {
+//        let components = verse.components(separatedBy: "THIS_IS_HEADING")
+//
+//        if components.indices.contains(1) {
+//            return String(components[1])
+//        } else {
+//            return verse
+//        }
+//    }
+//    
+//    func getParagraphNumber() -> Int {
+//        pNum += 1
+//        var num = pNum
+//        print(num)
+//        return num
+//    }
     
     func formatData() -> Void {
         
@@ -46,7 +74,6 @@ struct ConferenceTalkView: View {
         tempPLang = primaryLang
         tempSLang = secondaryLang
         
-        print(dualLanguageTalkMetaData)
     }
     
     var body: some View {
@@ -177,9 +204,11 @@ struct ConferenceTalkView: View {
                         ForEach(Array($talkParagraphs.enumerated()), id: \.offset) { index, $p in
                             HStack(alignment: .top) {
                                 VStack {
-                                    Text("\(index + 1)")
-                                        .font(.custom("Poppins-Bold", size: 18))
-                                        .foregroundStyle(.blue)
+                                    if p.targetLangVerse[0] != "-1" {
+                                        Text("\(p.targetLangVerse[0])")
+                                            .font(.custom("Poppins-Bold", size: 18))
+                                            .foregroundStyle(.blue)
+                                    }
                                     Spacer()
                                 }
                                 .frame(width: 30) // Gives the paragraph numbers a clean, consistent width
@@ -195,11 +224,12 @@ struct ConferenceTalkView: View {
                                             .cornerRadius(5)
                                     }
                                     Text(
-                                        p.showTargetLang
-                                        ? p.targetLangVerse
-                                        : p.knownLangVerse
+                                        "\(p.showTargetLang ? p.targetLangVerse[1] : p.knownLangVerse[1])"
+//                                        p.showTargetLang
+//                                        ? getPrimaryText(verse: p.targetLangVerse)
+//                                        : getSecondaryText(verse: p.knownLangVerse)
                                     )
-                                    .font(.custom("Poppins-Regular", size: 18))
+                                    .font(.custom(p.targetLangVerse[0] == "-1" ? "Poppins-Bold" : "Poppins-Regular", size: p.targetLangVerse[0] == "-1" ? 30 : 18))
                                     .foregroundStyle(.gray)
                                     .onTapGesture {
                                         withAnimation(
@@ -212,6 +242,7 @@ struct ConferenceTalkView: View {
                                         //showBooksList = false
                                         
                                     }
+                                    .padding(.vertical, p.targetLangVerse[0] == "-1" ? 20 : 0)
                                 }
                             }
                             .padding(.horizontal, 10)
@@ -447,22 +478,26 @@ struct ConferenceTalkView: View {
 #Preview {
     ConferenceTalkView(primaryLang: .constant("Tagalog"), secondaryLang: .constant("English"),
                        pConferenceTalk: .constant(ConferenceTalkListItem(itemType: "Talk", title: "Pangwakas na Mensahe", author: "Ni Pangulong Dallin H. Oaks", calling: "Pangulo ng Ang Simbahan ni Jesucristo ng mga Banal sa mga Huling Araw", subject: "Ang pagtanggap ng mga ordenansa ng priesthood at pagpasok sa mga sagradong tipan ay mahahalagang hakbang sa 'panghabambuhay na mithiin' upang iayon ang ating mga puso, isipan, at buhay sa kalooban ng Diyos.", paragraphs: [
-                        "Aking minahamahal na mga kapatid, ang dakilang mga mensahe sa kumperensiyang ito at ang Espiritu ng Panginoon ay nagbigay-inspirasyon sa ating lahat na ituon ang ating pagsamba, ipokus ang ating pag-aaral, at pag-isahin ang ating mga patotoo sa mga turo ng Panginoong Jesucristo at sa plano ng Kanyang Ama para sa ating walang-hanggang pag-unlad at kagalakan.",
-                        "Kapag nailathala na ang mga mensahe sa kumperensiyang ito, inaanyayahan namin ang lahat na pag-aralan at pagnilayan ang mga ito nang may panalangin at kumilos nang may pananampalataya ayon sa mga alituntuning ipinapaliwanag ng mga ito. Nangako ang Panginoon, 'Siya na tumatanggap ay bibigyan ko pa ng karagdagan.'",
-                        "Habang inaabangan natin ang hinaharap, wini-welcome natin ang mundo, nang personal o virtual, sa Pagdiriwang sa Salt Lake Temple. Sa Abril-05, 2027, bubuksan sa publiko ang mga pinto ng templo, ang unang ganitong pagbubukas simula noong 1893, 134 na taon ang nakararaan.",
-                        "Samahan kami sa TempleSquare.org o sa pamamagitan ng Temple Square app upang alamin ang iba pa.",
-                        "Kasunod ng sesyong ito ng pangkalahatang kumperensiya, ang unang episode ng magandang video series na Ilaan ay unang ipalalabas sa buong mundo sa iba't ibang wika. Marami pang darating sa mga susunod na buwan, kabilang ang isang virtual tour ng Salt Lake Temple.",
-                        "Sa ating pagpapatuloy ngayon, binabasbasan namin kayo at ang inyong mga pamilya ng mga pagpapala ng Panginoon, na mga pagpapala ng kapayapaan at kasiyahan. At binabasbasan namin ang iyong paglilingkod sa Panginoong Jesucristo sa mga panahong ito ng pagsubok.",
-                        "Magtatapos ako sa aking patotoo. Ito ang ipinanumbalik na ebanghelyo ni Jesucristo sa Kanyang Simbahan ni Jesucristo ng mga Banal sa mga Huling Araw. Dito mahahanap ang katotohanan-katotohanan tungkol sa mga turo ng Panginoon at katotohanan tungkol sa landas ng tipan na patungo sa ating tadhana, ang tadhanang hangad ng ating Ama sa Langit. Pinatototohanan ko ito sa inyo sa pangalan ni Jesucristo, amen."
+                        ["-1", "hello world"],
+                        ["1", "Aking minahamahal na mga kapatid, ang dakilang mga mensahe sa kumperensiyang ito at ang Espiritu ng Panginoon ay nagbigay-inspirasyon sa ating lahat na ituon ang ating pagsamba, ipokus ang ating pag-aaral, at pag-isahin ang ating mga patotoo sa mga turo ng Panginoong Jesucristo at sa plano ng Kanyang Ama para sa ating walang-hanggang pag-unlad at kagalakan."],
+                        ["2", "Kapag nailathala na ang mga mensahe sa kumperensiyang ito, inaanyayahan namin ang lahat na pag-aralan at pagnilayan ang mga ito nang may panalangin at kumilos nang may pananampalataya ayon sa mga alituntuning ipinapaliwanag ng mga ito. Nangako ang Panginoon, 'Siya na tumatanggap ay bibigyan ko pa ng karagdagan.'"],
+                        ["3", "Habang inaabangan natin ang hinaharap, wini-welcome natin ang mundo, nang personal o virtual, sa Pagdiriwang sa Salt Lake Temple. Sa Abril-05, 2027, bubuksan sa publiko ang mga pinto ng templo, ang unang ganitong pagbubukas simula noong 1893, 134 na taon ang nakararaan."],
+                        ["-1", "hello world 2!!!"],
+                        ["4", "Samahan kami sa TempleSquare.org o sa pamamagitan ng Temple Square app upang alamin ang iba pa."],
+                        ["5", "Kasunod ng sesyong ito ng pangkalahatang kumperensiya, ang unang episode ng magandang video series na Ilaan ay unang ipalalabas sa buong mundo sa iba't ibang wika. Marami pang darating sa mga susunod na buwan, kabilang ang isang virtual tour ng Salt Lake Temple."],
+                        ["6", "Sa ating pagpapatuloy ngayon, binabasbasan namin kayo at ang inyong mga pamilya ng mga pagpapala ng Panginoon, na mga pagpapala ng kapayapaan at kasiyahan. At binabasbasan namin ang iyong paglilingkod sa Panginoong Jesucristo sa mga panahong ito ng pagsubok."],
+                        ["7", "Magtatapos ako sa aking patotoo. Ito ang ipinanumbalik na ebanghelyo ni Jesucristo sa Kanyang Simbahan ni Jesucristo ng mga Banal sa mga Huling Araw. Dito mahahanap ang katotohanan-katotohanan tungkol sa mga turo ng Panginoon at katotohanan tungkol sa landas ng tipan na patungo sa ating tadhana, ang tadhanang hangad ng ating Ama sa Langit. Pinatototohanan ko ito sa inyo sa pangalan ni Jesucristo, amen."]
                     ])),
                        sConferenceTalk: .constant(ConferenceTalkListItem(itemType: "Talk", title: "Prophets, Seers, and Revelators", author: "By President Dallin H. Oaks", calling: "President of The Church of Jesus Christ of Latter-day Saints", subject: "As we look forward, we are welcoming the world, in person or virtually, to the Salt Lake Temple Celebration.", paragraphs: [
-                        "My dear brothers and sisters, the great messages of this conference and the Spirit of the Lord have inspired all of us to concentrate our worship, focus our learning, and unite our testimonies on the teachings of the Lord Jesus Christ and His Father's plan for our eternal increase and joy.",
-                        "As the talks of this conference are published, we invite all to study and ponder them prayerfully and to act in faith on the principles they explain. The Lord has promised, 'Unto him that receiveth I will give more.'",
-                        "As we look forward, we are welcoming the world, in person or virtually, to the Salt Lake Temple Celebration. On April 05, 2027, the temple doors will open to the public - the first such opening since 1893, 134 years ago.",
-                        "Join us at TempleSquare.org or through the Temple Square app to learn more.",
-                        "Following this session of general conference, the first episode of a dynamic video series, Dedicate, will premiere worldwide in multiple languages. More will come in the months ahead, including a virtual tour of the Salt Lake Temple.",
-                        "As we now go forward, we invoke the blessings of the Lord on you and your families, blessings of peace and contentment. And we bless your service of the Lord Jesus Christ in these challenging times.",
-                        "I close with my testimony. This is the restored gospel of Jesus Christ in His Church of Jesus Christ of Latter-day Saints. Truth is to be found here - truth about the teachings of the Lord and truth about the covenant path that will lead us to our destiny, the destiny desired by our Heavenly Father. Of all this I testify to you in the name of Jesus Christ, amen."
+                        ["-1", "hello world"],
+                        ["1", "My dear brothers and sisters, the great messages of this conference and the Spirit of the Lord have inspired all of us to concentrate our worship, focus our learning, and unite our testimonies on the teachings of the Lord Jesus Christ and His Father's plan for our eternal increase and joy."],
+                        ["2", "As the talks of this conference are published, we invite all to study and ponder them prayerfully and to act in faith on the principles they explain. The Lord has promised, 'Unto him that receiveth I will give more.'"],
+                        ["3", "As we look forward, we are welcoming the world, in person or virtually, to the Salt Lake Temple Celebration. On April 05, 2027, the temple doors will open to the public - the first such opening since 1893, 134 years ago."],
+                        ["-1", "hello world 2!!!"],
+                        ["4", "Join us at TempleSquare.org or through the Temple Square app to learn more."],
+                        ["5", "Following this session of general conference, the first episode of a dynamic video series, Dedicate, will premiere worldwide in multiple languages. More will come in the months ahead, including a virtual tour of the Salt Lake Temple."],
+                        ["6", "As we now go forward, we invoke the blessings of the Lord on you and your families, blessings of peace and contentment. And we bless your service of the Lord Jesus Christ in these challenging times."],
+                        ["7", "I close with my testimony. This is the restored gospel of Jesus Christ in His Church of Jesus Christ of Latter-day Saints. Truth is to be found here - truth about the teachings of the Lord and truth about the covenant path that will lead us to our destiny, the destiny desired by our Heavenly Father. Of all this I testify to you in the name of Jesus Christ, amen."]
                     ])), getConferenceTalksList: {}
                        
     )

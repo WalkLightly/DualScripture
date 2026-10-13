@@ -8,7 +8,7 @@
 import Foundation
 
 struct DualLanguageConferenceTalkParagraphs: Codable  {
-    var knownLangVerse: String
-    var targetLangVerse: String
+    var knownLangVerse: [String]
+    var targetLangVerse: [String]
     var showTargetLang: Bool
 }

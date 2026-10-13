@@ -13,7 +13,7 @@ struct ConferenceTalkListItem: Hashable {
     let author: String
     let calling: String
     let subject: String
-    let paragraphs: [String]
+    let paragraphs: [[String]]
 }
 
 var sessionNameMap: [String: String] = [
